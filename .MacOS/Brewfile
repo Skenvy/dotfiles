@@ -1,0 +1,59 @@
+tap "argoproj/tap"
+tap "buo/cask-upgrade"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/core"
+tap "weaveworks/tap"
+brew "bash"
+brew "cowsay"
+brew "gcc"
+brew "gh"
+brew "github-keygen"
+brew "gnupg"
+brew "helm"
+brew "jq"
+brew "k9s"
+brew "llvm"
+brew "mas"
+brew "maven"
+brew "sbt"
+brew "stow"
+brew "watch"
+brew "yq"
+brew "argoproj/tap/kubectl-argo-rollouts"
+brew "weaveworks/tap/eksctl"
+mas "1Password 7", id: 1333542190
+mas "Apple Configurator", id: 1037126344
+mas "Classroom", id: 1358883623
+mas "Developer", id: 640199958
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "iStat Menus", id: 1319778037
+mas "Jira", id: 1475897096
+mas "Keynote", id: 409183694
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft OneNote", id: 784801555
+mas "Microsoft Outlook", id: 985367838
+mas "Microsoft PowerPoint", id: 462062816
+mas "Microsoft Word", id: 462054704
+mas "Numbers", id: 409203825
+mas "OneDrive", id: 823766827
+mas "Pages", id: 409201541
+mas "Playgrounds", id: 1496833156
+mas "TestFlight", id: 899247664
+mas "Transporter", id: 1450874784
+mas "Xcode", id: 497799835
+vscode "ms-azuretools.vscode-docker"
+vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
+vscode "ms-vscode-remote.remote-containers"
+vscode "redhat.java"
+vscode "redhat.vscode-yaml"
+vscode "SonarSource.sonarlint-vscode"
+vscode "VisualStudioExptTeam.intellicode-api-usage-examples"
+vscode "VisualStudioExptTeam.vscodeintellicode"
+vscode "vscjava.vscode-java-debug"
+vscode "vscjava.vscode-java-dependency"
+vscode "vscjava.vscode-java-pack"
+vscode "vscjava.vscode-java-test"
+vscode "vscjava.vscode-maven"
