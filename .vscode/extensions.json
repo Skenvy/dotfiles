@@ -35,6 +35,7 @@
       "ms-toolsai.vscode-jupyter-cell-tags",
 
     // Others, install at will
+    // "cschlosser.doxdocgen",
     // "kddejong.vscode-cfn-lint",
     // "vscjava.vscode-gradle",
     // "puorc.awesome-vhdl",
