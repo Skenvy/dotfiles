@@ -34,7 +34,10 @@
       "ms-toolsai.vscode-jupyter-slideshow",
       "ms-toolsai.vscode-jupyter-cell-tags",
 
-    //"kddejong.vscode-cfn-lint",
-    //"vscjava.vscode-gradle".
+    // Others, install at will
+    // "kddejong.vscode-cfn-lint",
+    // "vscjava.vscode-gradle",
+    // "puorc.awesome-vhdl",
+    // "fwcd.kotlin",
   ]
 }
