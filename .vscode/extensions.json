@@ -1,4 +1,6 @@
 {
+  // Comments will be marked as errors in gh syntax highlighting,
+  // but JSONC format is default when this is opened by VS Code.
   "recommendations": [
     // Core
     "ms-azuretools.vscode-docker",
