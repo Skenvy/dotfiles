@@ -23,4 +23,8 @@ jobs:
         REMOTE_HEAD=$(git name-rev $HEADSHA --name-only)
         git checkout -b main $REMOTE_HEAD -f
         ls -liath
+    - run: cat ~/.bashrc
+    - run: cat ~/.profile
+    - run: cat ~/.bash_profile
+    - run: cat ~/.bash_logout
 
