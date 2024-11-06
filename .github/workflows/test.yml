@@ -1,0 +1,27 @@
+name: Test
+on:
+  workflow_dispatch:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+jobs:
+  quick-test:
+    name: Quick Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone
+      run: |-
+        cd ~
+        ls -liath
+        git cd ~
+        git init
+        git remote add origin https://github.com/Skenvy/dotfiles.git # git@github.com:Skenvy/dotfiles.git
+        git fetch
+        git remote set-head origin -a
+        HEADSHA=$(git rev-parse origin/HEAD)
+        git remote set-head origin -d
+        REMOTE_HEAD=$(git name-rev $HEADSHA --name-only)
+        git checkout -b main $REMOTE_HEAD -f
+        ls -liath
+
