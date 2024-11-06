@@ -14,7 +14,6 @@ jobs:
       run: |-
         cd ~
         ls -liath
-        git cd ~
         git init
         git remote add origin https://github.com/Skenvy/dotfiles.git # git@github.com:Skenvy/dotfiles.git
         git fetch
