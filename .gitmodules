@@ -1,0 +1,4 @@
+[submodule "dotfiles"]
+    path = dotfiles
+    url = git@github.com:Skenvy/dotfiles.git
+    branch = main
