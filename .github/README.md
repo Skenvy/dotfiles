@@ -1,0 +1,4 @@
+# [dotfiles@base](https://github.com/Skenvy/dotfiles/tree/base)
+This is the example "base" branch, demonstrating what a repo should look like when following the [Use as "`$HOME` is _this_ repo"](https://github.com/Skenvy/dotfiles?tab=readme-ov-file#use-as-home-is-this-repo) approach.
+You could follow the steps in that section to either create these few files from scratch, or you could fork this and just work out of this base branch in your fork.
+This readme makes use of github readme ordering, by default rendering a readme from within the `.github` folder before trying to render one from the repo root; if you are going to create your own copy of this, or fork this, and you want a readme in your copy, you should make it in `.github/README.md`, as the symlinking script will always try to symlink the `main`'s `~/README.md` into your local clone, and wont conflict with one you keep in `.github/README.md`
