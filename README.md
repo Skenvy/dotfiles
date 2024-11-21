@@ -14,12 +14,12 @@ _This_ is _**my**_ dotfile repository. It follows the ["`$HOME` is a repo"](http
 
 This dotfile repository is setup in a way that it follows "`$HOME` is a repo", in multiple ways.
 1. "`$HOME` is _this_ repo" -- you can directly clone this on top of `$HOME`.
-    1. You can *clone* this's `home` (_my_ config, if you want the exact same config)
-    1. You can **fork** this's `main` (the core files for my "`$HOME` is a repo" setup)
-    1. You can **fork** this's `home` (_my_ config, if you want to start from but change it)
+    1. You can *clone* this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) (_my_ config, if you want the exact same config)
+    1. You can **fork** this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) (the core files for my "`$HOME` is a repo" setup)
+    1. You can **fork** this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) (_my_ config, if you want to start from but change it)
 1. "`$HOME` is _another_ repo" -- you add this as a submodule in your own dotfiles repo ~= `$HOME`.
-    1. You can _clone_ this's `base` and target this's `main` or `home`
-    1. You can _clone_ this's `base` and target your fork of this's `main` / `home`
+    1. You can _clone_ / **fork** this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) or [`home`](https://github.com/Skenvy/dotfiles/tree/home)
+    1. You can _clone_ / **fork** this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target your fork of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) / [`home`](https://github.com/Skenvy/dotfiles/tree/home)
 
 <p align="center"><img alt="Banner Image, Bless this mess" src="https://raw.githubusercontent.com/wiki/Skenvy/dotfiles/.meta/banners/bless_this_mess.png" width=1024 height=180/></p>
 
@@ -49,14 +49,14 @@ More than likely, `~` won't be empty, so `git` will refuse to clone into it.
 1. Be in your home directory; `cd` works differently across `bash`, `pwsh`, and `cmd`
 1. Make `~` the repo, add the remote, and set the head. ONLY `bash` or `cmd`, NOT `pwsh`.
 
-#### Clone my `home`
+#### Clone my [`home`](https://github.com/Skenvy/dotfiles/tree/home)
 > [!CAUTION]
 > **Destructively** overwrite the files of the same name as those checked in.
 > ```bash
 > git init && git remote add origin git@github.com:Skenvy/dotfiles.git && git fetch && git checkout -b home remotes/origin/home -f
 > ```
 
-#### Or, fork my `main` / `home` and clone your fork
+#### Or, fork my [`main`](https://github.com/Skenvy/dotfiles/tree/main) / [`home`](https://github.com/Skenvy/dotfiles/tree/home) and clone your fork
 [Fork this](https://github.com/Skenvy/dotfiles/fork), calling it `dotfiles`, and edit the following to point you `<YOU>`.
 > [!CAUTION]
 > **Destructively** overwrite the files of the same name as those checked in.
@@ -78,7 +78,11 @@ If this sounds like something you want to try, you should add this repository as
 ### Steps
 #### Starting without a repository
 If you do not yet have a dotfiles repository, and this is the way you intend to start one for the first time, or starting over, there's a few things to take note of.
-Firstly, some files "can't" be symlinked, in that the programs that read them won't be happy following symlinks. Certain `git` configuration for example can't by symlinked as `git` won't follow symlinks. To begin your repository, you may start with a blank repository, and add two files;
+Notably, some files "can't" be symlinked, in that the programs that read them won't be happy following symlinks, e.g. certain `git` configuration for example can't by symlinked as `git` won't follow symlinks.
+
+You'll need to create a new repo that should match this's [`base`](https://github.com/Skenvy/dotfiles/tree/base). If you would rather fork this and work out of your clone of your fork in the this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) branch, that's fine too, but it should be easier to just put together the handful of files.
+
+To begin your repository, you may start with a blank repository, and add two files;
 1. `.gitignore` of just `*`
 1. `.gitattributes` of just `* text=auto`
 
@@ -86,24 +90,27 @@ Which assumes that you will be only ever "force adding" with `git add -f`, and t
 
 Now you have an "existing repository" with `.gitignore` and `.gitattributes`, follow the next steps.
 #### Starting from an existing repository
-Here's how you would submodule this into another repository and symlink it into `$HOME`.
+Here's how you would submodule this into another repository and symlink it into `$HOME`, whether you are submoduling **this** repo, or if you forked it and you're submoduling _your fork_.
 1. If you use a `.gitignore` that is just `*`, this can conflict with adding a submodule, so temporarily `rm .gitignore`
 1. If you'd like to fork this first, you can, and, say, call it `dotfiles-base`
 1. Now you can track this as a submodule `git submodule add git@github.com:Skenvy/dotfiles.git`
 1. Or if you forked `git submodule add -- git@github.com:<YOU>/dotfiles-base.git dotfiles`
 1. The submodule and `.gitmodules` are staged, so `git restore .gitignore` and commit.
 1. `git submodule init && git submodule update`
+1. \+ `git submodule update --remote` to periodically retrack your modules's `HEAD`
 
 Now with a `.gitmodules` file that places **this repository** in the `dotfiles` folder in the repo that has added this;
 ```ini
 # If you submodulesd this directly --
 [submodule "dotfiles"]
-        path = dotfiles
-        url = git@github.com:Skenvy/dotfiles.git
+    path = dotfiles
+    url = git@github.com:Skenvy/dotfiles.git
+    branch = main # or home
 # Or if you forked this and submoduled your fork of this --
 [submodule "dotfiles"]
-        path = dotfiles
-        url = git@github.com:<YOU>/dotfiles-base.git
+    path = dotfiles
+    url = git@github.com:<YOU>/dotfiles-base.git
+    branch = home
 ```
 With the submodule initialised and updated we can now symlink its contents into `$HOME`.
 > [!CAUTION]
