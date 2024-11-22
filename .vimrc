@@ -1,0 +1,10 @@
+set number
+set ruler
+set hlsearch
+syntax enable
+set nobackup
+set noswapfile
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set wrap

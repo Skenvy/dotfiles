@@ -1,0 +1,4 @@
+FROM ubuntu:20.04
+RUN apt update && apt install bash cowsay -y && ln -s /usr/games/cowsay /usr/bin/cowsay && ln -s /usr/games/cowthink /usr/bin/cowthink && echo "cowsay -f dragon Hello" > say.sh
+ENTRYPOINT ["bash"]
+CMD ["say.sh", ";", "bash"]

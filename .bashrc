@@ -15,6 +15,8 @@ source-existing-file ~/.include/.pre/.bashrc
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
+HISTIGNORE="*PASSWORD*:*TOKEN*:*API_KEY*:*AWS_ACCESS_KEY_ID*:*AWS_SECRET_ACCESS_KEY*"
+# TODO? https://unix.stackexchange.com/questions/210297/how-to-exclude-command-from-history-list-but-to-keep-it-in-live-history
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -208,5 +210,13 @@ ssh-add-unloaded-key() {
 # ssh-add-unloaded-key "my_primary_key"
 
 export GPG_TTY=$(tty)
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 
 source-existing-file ~/.include/.post/.bashrc
