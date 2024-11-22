@@ -1,6 +1,10 @@
 # [MacOS _specific_ dotfiles](https://github.com/Skenvy/dotfiles/tree/main/.MacOS)
+> [!WARNING]
+> Some of the examples here might only be relevant to this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) and not part of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main)
+
+These are general instructions relevant to `MacOS` setup. You probably want to track your own brews. My stuff for these live in my [`home`](https://github.com/Skenvy/dotfiles/tree/home) but I've left the instructions in [`main`](https://github.com/Skenvy/dotfiles/tree/main).
 ## [Homebrew](https://brew.sh/)
-* See the brews at [~/.MacOS/Brewfile](https://github.com/Skenvy/dotfiles/blob/main/.MacOS/Brewfile).
+* See your brews at [~/.MacOS/Brewfile](https://github.com/Skenvy/dotfiles/blob/main/.MacOS/Brewfile).
 * Restore brews
     * `brew bundle --file=~/.MacOS/Brewfile`
 * Backup brews
@@ -9,7 +13,7 @@
     * `sudo rm -rf /Library/Developer/CommandLineTools && sudo xcode-select --install`
 * See the [lockfile](https://github.com/Homebrew/homebrew-bundle/pull/552) at [~/.MacOS/Brewfile.lock.json](https://github.com/Skenvy/dotfiles/blob/main/.MacOS/Brewfile.lock.json) if necessary.
 ## [iTerm2](https://iterm2.com/)
-These settings expect [cowsay](https://formulae.brew.sh/formula/cowsay) to already be installed.
+The settings expect [cowsay](https://formulae.brew.sh/formula/cowsay) to already be installed.
 
 Profiles exported to [`~/.MacOS/iterm_export/Profiles.json`](https://github.com/Skenvy/dotfiles/blob/main/.MacOS/iterm_export/Profiles.json)
 > Settings -> Profiles -> "Other Actions..." -> "Import JSON Profiles..."

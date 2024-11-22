@@ -80,7 +80,7 @@ If this sounds like something you want to try, you should add this repository as
 If you do not yet have a dotfiles repository, and this is the way you intend to start one for the first time, or starting over, there's a few things to take note of.
 Notably, some files "can't" be symlinked, in that the programs that read them won't be happy following symlinks, e.g. certain `git` configuration for example can't by symlinked as `git` won't follow symlinks.
 
-You'll need to create a new repo that should match this's [`base`](https://github.com/Skenvy/dotfiles/tree/base). If you would rather fork this and work out of your clone of your fork in the this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) branch, that's fine too, but it should be easier to just put together the handful of files.
+You'll need to create a new repo that should match this's [`base`](https://github.com/Skenvy/dotfiles/tree/base). If you'd rather fork this and work out of your clone of your fork in this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) branch, that's fine too, but it should be easier to just put together the handful of files.
 
 To begin your repository, you may start with a blank repository, and add two files;
 1. `.gitignore` of just `*`
