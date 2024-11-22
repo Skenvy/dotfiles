@@ -8,6 +8,10 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+if [ -f "$HOME/.include/.pre/.profile" ]; then
+  . "$HOME/.include/.pre/.profile"
+fi
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -24,4 +28,8 @@ fi
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -f "$HOME/.include/.post/.profile" ]; then
+  . "$HOME/.include/.post/.profile"
 fi

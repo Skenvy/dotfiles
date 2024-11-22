@@ -8,6 +8,10 @@ case $- in
       *) return;;
 esac
 
+source-existing-file() { if [ -f "$1" ]; then source "$1"; fi; }
+
+source-existing-file ~/.include/.pre/.bashrc
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -56,10 +60,15 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# Git branch for prompt
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\e[91m\]$(parse_git_branch)\[\e[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -115,3 +124,19 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# SSH+GPG
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+    eval `ssh-agent -s` > /dev/null
+fi
+
+ssh-add-unloaded-key() {
+     ssh-add -L | grep "$(cat ~/.ssh/$1.pub)" > /dev/null || ssh-add ~/.ssh/$1
+}
+
+# Add a line like the below to your ~/.include/.post/.bashrc
+# ssh-add-unloaded-key "my_primary_key"
+
+export GPG_TTY=$(tty)
+
+source-existing-file ~/.include/.post/.bashrc
