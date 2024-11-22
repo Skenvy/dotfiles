@@ -1,5 +1,6 @@
 # [Devlog](https://github.com/Skenvy/dotfiles/blob/main/devlog.md)
-A wild west of stuff that used to be in the readme, or are notes I wrote for myself. If you got here on an anchor link, that section should be relevant at least.
+> [!CAUTION]
+> A wild west of stuff that used to be in the readme, or are notes I wrote for myself. If you got here on an anchor link, that section should be relevant at least. But large chunks are just copy pasted paragraphs that have probably totally lost their initial context by now.
 ## Prelim
 <!-- don't change the below title, it's anchor linked-to -->
 ### `$HOME` is a repo
@@ -53,38 +54,6 @@ To use these configs as an extensible base, where you can track this repository 
 > This is specifically geared to my use case of wanting to maintain personal, public, dotfiles that I utilise on personal machines, that I can also utilise on any work machine, for which it would be convenient to use a private repository such that I can commit the `.include/*` hooks relevant for work that shouldn't be public, but that I don't want to lose to the ether. This method allows for maintaining these personal, public, dotfiles, that I can submodule into a private, work specific, dotfiles repository, symlink into `$HOME`, and commit any `.include/*` hooks as they grow.
 
 Of course, this goes against the intentional lack of symlinks in **this** flat splat of the "`$HOME` is a repo" design, but I'm ok with that. You might say that forking this, and tracking **this** as an upstream would be simpler, but that lacks that immediacy of seperation between "what am I editting in 'my changes on top of this'?" and "am I editting something that I'll need to move back upstream?" -- whereas working with a module lets me see the small changeset of hooks for what they are, and immediately know from a `git status` if I need to relocate config changes.
-
-Anyway, here's how you would submodule this into another repository and symlink it into `$HOME`.
-1. If you use a `.gitignore` that is just `*`, this can conflict with adding a submodule, so temporarily `rm .gitignore`
-1. If you'd like to fork this first, you can, and, say, call it `dotfiles-base`
-1. Now you can track this as a submodule `git submodule add git@github.com:Skenvy/dotfiles.git`
-1. Or if you forked `git submodule add -- git@github.com:<YOU>/dotfiles-base.git dotfiles`
-1. The submodule and `.gitmodules` are staged, so `git restore .gitignore` and commit.
-1. `git submodule init && git submodule update`
-
-Now with a `.gitmodules` file that places **this repository** in the `dotfiles` folder in the repo that has added this;
-```ini
-[submodule "dotfiles"]
-        path = dotfiles
-        url = git@github.com:Skenvy/dotfiles.git
-# OR
-[submodule "dotfiles"]
-        path = dotfiles
-        url = git@github.com:<YOU>/dotfiles-base.git
-```
-With the submodule initialised and updated we can now symlink its contents into `$HOME`.
-> [!CAUTION]
-> `CLOBBER_HOME=DESTRUCTIVELY` will **force** symlinks (`ln -sf`) to write over files.
-> ```bash
-> cd ~ && ./dotfiles/bin/dotfiles-submodule-symlinks # Safest. Or, if you prefer to live on the edge..
-> CLOBBER_CHECKEDIN_ROOT=REPLACE CLOBBER_HOME=GRACEFULLY ./dotfiles/bin/dotfiles-submodule-symlinks
-> ```
-
-> [!WARNING]
-> If you want to maintain a `README.md` that will display on the github page of the repository that submodules this, because this process will clobber the including repository's root `README.md` with a symlink to **this** repository's `README.md`, you can get around this by placing your `README.md` you want displayed at `.github/README.md`, which is the first path for a `README.md` file that github will look for (even before a root `README.md`).
-
-> [!IMPORTANT]
-> Note that the process of linking files into `$HOME` wont touch several files, listed in the script. You should ideally have a `~/.gitignore` of just `*` and a `~/.gitattributes` of just `* text=auto`.
 
 ## Images in the readme
 Images are stored in the wiki and sourced in the html of the readme. `git clone git@github.com:Skenvy/dotfiles.wiki.git`, then you can find the images in `(dotfiles.wiki)/.meta/banners/` and access them via https://raw.githubusercontent.com/wiki/Skenvy/dotfiles/.meta/banners/
