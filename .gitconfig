@@ -1,0 +1,29 @@
+[include]
+    path = .include/.pre/.gitconfig
+
+[core]
+    # autocrlf = <add in .include/.post/.gitconfig>
+    # editor = <add in .include/.post/.gitconfig>
+    # filemode = <add in .include/.post/.gitconfig>
+    # symlinks = <add in .include/.post/.gitconfig>
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[pull]
+    ff = only
+
+[user]
+    # email = <add in .include/.post/.gitconfig>
+    # name = <add in .include/.post/.gitconfig>
+    # signingkey = <add in .include/.post/.gitconfig>
+
+[commit]
+    # gpgsign = true :: but relies on signingkey being known.
+    # signingkey = <add in .include/.post/.gitconfig>
+
+[include]
+    path = .include/.post/.gitconfig
