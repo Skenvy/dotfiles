@@ -18,8 +18,18 @@ This dotfile repository is setup in a way that it follows "`$HOME` is a repo", i
     1. You can **fork** this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) (the core files for my "`$HOME` is a repo" setup)
     1. You can **fork** this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) (_my_ config, if you want to start from but change it)
 1. "`$HOME` is _another_ repo" -- you add this as a submodule in your own dotfiles repo ~= `$HOME`.
-    1. You can _clone_ / **fork** this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) or [`home`](https://github.com/Skenvy/dotfiles/tree/home)
-    1. You can _clone_ / **fork** this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target your fork of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) / [`home`](https://github.com/Skenvy/dotfiles/tree/home)
+    1. You can _clone_ / **fork** / _remake_ this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) or [`home`](https://github.com/Skenvy/dotfiles/tree/home)
+    1. You can _clone_ / **fork** / _remake_ this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target your fork of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main) / [`home`](https://github.com/Skenvy/dotfiles/tree/home)
+
+_My_ use cases are a combination of
+1. For personal machines
+    1. "`$HOME` is _this_ repo" :: "*clone* this's [`home`](https://github.com/Skenvy/dotfiles/tree/home)"
+1. For work machines
+    1. "`$HOME` is _this_ repo" :: "**fork** this's [`home`](https://github.com/Skenvy/dotfiles/tree/home)" to my work account [CloutKhan/dotfiles-base](https://github.com/CloutKhan/dotfiles-base)
+    1. \+ "`$HOME` is _another_ repo" :: "_remake_ this's [`base`](https://github.com/Skenvy/dotfiles/tree/base) and target your fork of this's [`home`](https://github.com/Skenvy/dotfiles/tree/home)"
+
+> [!TIP]
+> The other provided use cases allow you to do the exact same thing, but with an emphasis on keeping your own forks of everything, in every case. I like what I've done here, but fundamentally dotfiles are "personal" configuration, so if you do like this pattern, you should fork it, because there's no guarantee I won't completely change this at any point. This's [`main`](https://github.com/Skenvy/dotfiles/tree/main) is an example of the setup, with some essentially unchanged config files as examples only. This's [`home`](https://github.com/Skenvy/dotfiles/tree/home) is the actual settings I use. If you kinda like the idea of this, but that's it, the [`main`](https://github.com/Skenvy/dotfiles/tree/main) branch's init commit contains the actual core files. Idk do what you want lol.
 
 <p align="center"><img alt="Banner Image, Bless this mess" src="https://raw.githubusercontent.com/wiki/Skenvy/dotfiles/.meta/banners/bless_this_mess.png" width=1024 height=180/></p>
 
