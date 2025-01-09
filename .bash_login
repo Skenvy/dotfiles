@@ -8,17 +8,17 @@ source-existing-file ~/.include/.pre/.bash_login
 # MacOS :: Homebrew
 if [ -f /opt/homebrew/bin/brew ]; then eval "$(/opt/homebrew/bin/brew shellenv)" ; fi
 
-# NVM
+# NVM -- https://github.com/nvm-sh/nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# RVM
+# RVM -- https://rvm.io/
 export PATH="$PATH:$HOME/.rvm/bin"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-# Rust
-. "$HOME/.cargo/env"
+# Rust -- https://www.rust-lang.org/learn/get-started
+[ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
 
 # Post-hook
 source-existing-file ~/.include/.post/.bash_login
