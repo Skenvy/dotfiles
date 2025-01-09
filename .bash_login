@@ -16,6 +16,7 @@ export NVM_DIR="$HOME/.nvm"
 # RVM -- https://rvm.io/
 export PATH="$PATH:$HOME/.rvm/bin"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# Will try and install binaries only if they exist on https://rvm_io.global.ssl.fastly.net/binaries/
 
 # Rust -- https://www.rust-lang.org/learn/get-started
 [ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
