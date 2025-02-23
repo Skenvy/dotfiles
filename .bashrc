@@ -211,12 +211,25 @@ ssh-add-unloaded-key() {
 
 export GPG_TTY=$(tty)
 
-# NVM
+# MacOS :: Homebrew
+if [ -f /opt/homebrew/bin/brew ]; then eval "$(/opt/homebrew/bin/brew shellenv)" ; fi
+
+# NVM -- https://github.com/nvm-sh/nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+# RVM -- https://rvm.io/
+export RVM_DIR="$HOME/.rvm"
+export PATH="$PATH:$RVM_DIR/bin"
+[[ -s "$RVM_DIR/scripts/rvm" ]] && source "$RVM_DIR/scripts/rvm" # Load RVM into a shell session *as a function*
+# Will try and install binaries only if they exist on https://rvm_io.global.ssl.fastly.net/binaries/
+
+# Rust -- https://www.rust-lang.org/learn/get-started
+[ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
+
+# Go -- https://go.dev/doc/install + https://go.dev/doc/manage-install
+# But instead of unzipping to /usr/local/go I like to unzip it to ~/.go
+[ -s "$HOME/.go/bin" ] && export PATH=$PATH:$HOME/.go/bin
 
 source-existing-file ~/.include/.post/.bashrc
