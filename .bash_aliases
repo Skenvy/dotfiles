@@ -26,6 +26,7 @@ alias quack="git diff \$(git merge-base \$(git rev-parse --abbrev-ref origin/HEA
 alias honk="git diff \$(git merge-base \$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) HEAD).."
 alias pull_trunk="__=\$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) && git fetch origin \$__:\$__"
 alias merge_trunk="__=\$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) && git fetch origin \$__:\$__ && git merge \$__"
+alias merge_trunk_squash_theirs="__=\$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) && git fetch origin \$__:\$__ && git merge --squash -X theirs \$__"
 alias cook_mcangus="CURR_BRANCH=\$(git branch -a | grep \* | cut -d ' ' -f2) && echo \"\\\$CURR_BRANCH = \$CURR_BRANCH\""
 alias eat_mcangus="git checkout \$CURR_BRANCH"
 alias unhook="git config --unset core.hookspath"
