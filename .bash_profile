@@ -18,7 +18,8 @@ source-existing-file ~/.bash_login
 source-existing-file ~/.profile
 
 # rc
-source-existing-file ~/.bashrc
+# Using ubuntu's /etc/skel/.profile as our ~/.profile already sources ~/.bashrc
+# source-existing-file ~/.bashrc
 
 # Post-hook
 source-existing-file ~/.include/.post/.bash_profile
