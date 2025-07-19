@@ -13,6 +13,7 @@ See the docs on:
 * [All SSH manuals](https://www.openssh.com/manual.html)
 * [SSH client conf](https://man.openbsd.org/ssh_config)
 * [SSH's "include" directive](https://man.openbsd.org/ssh_config#Include)
+* [Using ssh with vs code devcontainers](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials)
 ## First time setup: Linking config from Windows in to WSL
 This guide favours having the config for SSH checked-in, but for the keys, and other temporary / non-checked-in files, they will be **stored in Windows** and _symlinked in to WSL_.
 ### Symlink the _whole_ directory (easier, not checked-in config)
@@ -43,7 +44,7 @@ Upload the public key `cat ~/.ssh/$KEYNAME.pub` to https://github.com/settings/s
 ## Add the new key to the ssh-agent
 ### Enable `chmod`'ing' the keys stored in Windows filesystem from WSL
 If you're going to `chmod` you might need to add the following to `sudo vi /etc/wsl.conf` from WSL
-```conf
+```ini
 [automount]
 options = "metadata"
 ```
