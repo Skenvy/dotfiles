@@ -38,3 +38,5 @@
 [gpg]
     program = /opt/homebrew/bin/gpg
 ```
+## `.ssh_config`
+The `~/.ssh/config` includes `../.include/.pre/.ssh_config`. You can keep config in `~/.ssh/config` and later add pre-emptive overrides by duplicating `Host` sections in the **pre** config.
