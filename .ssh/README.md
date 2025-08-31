@@ -107,3 +107,6 @@ If you've been using some https method, you'll need to update, or add a remote t
 git remote get-url --all origin
 git remote set-url origin git@github.com:USERNAME/REPOSITORY.git
 ```
+## Other
+### "same host but different keys and usernames"
+To set up an ssh+git config to automate swapping ssh identities used in repos according to containing directory, see [this](https://superuser.com/questions/366649/ssh-config-same-host-but-different-keys-and-usernames) stack question.

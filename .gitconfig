@@ -1,11 +1,16 @@
+# https://git-scm.com/docs/git-config
+
 [include]
     path = .include/.pre/.gitconfig
 
 [core]
-    # autocrlf = <add in .include/.post/.gitconfig>
-    # editor = <add in .include/.post/.gitconfig>
-    # filemode = <add in .include/.post/.gitconfig>
-    # symlinks = <add in .include/.post/.gitconfig>
+    # autocrlf = <add in .include/.pre/.gitconfig>
+    # editor = <add in .include/.pre/.gitconfig>
+    # filemode = <add in .include/.pre/.gitconfig>
+    # symlinks = <add in .include/.pre/.gitconfig>
+
+[gpg]
+    # program = <add in .include/.pre/.gitconfig>
 
 [filter "lfs"]
     clean = git-lfs clean -- %f
@@ -22,8 +27,10 @@
     # signingkey = <add in .include/.post/.gitconfig>
 
 [commit]
-    # gpgsign = true :: but relies on signingkey being known.
-    # signingkey = <add in .include/.post/.gitconfig>
+    # gpgsign = <add in .include/.post/.gitconfig>
+
+[tag]
+    # gpgSign = <add in .include/.post/.gitconfig>
 
 [include]
     path = .include/.post/.gitconfig
