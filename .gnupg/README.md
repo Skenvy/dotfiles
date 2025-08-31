@@ -56,7 +56,7 @@ But other than if you choose to clone this repo and use it in that way, we will 
 
 ## First time setup: Listing keys and configuring git
 `gpg --list-keys` will show you a list of known keys. To see all _secret_ keys (with the key ID in the `pub`/`sec`)
-```sh
+```bash
 gpg --list-secret-keys --keyid-format=long
 # Will print each secret key with a line like ~ i.e.
 # sec   <Algo>/<16-char-key-ID> ~ e.g.
@@ -65,7 +65,7 @@ gpg --armor --export 1234567890ABCDEF
 # Prints the GPG public key, in ASCII armor format
 ```
 From the `sec` line in this for the key we want to use, we take the 16 character key ID and...
-```sh
+```bash
 git config --global user.signingkey 1234567890ABCDEF
 git config --global commit.gpgsign true
 git config --global tag.gpgSign true
@@ -76,7 +76,7 @@ git config --global gpg.program "<the path you got from which|where gpg>"
 For examples of the `gpg.program` option across different OS, see the [pre includes README](../.include/.pre/README.md).
 ## Creating a new key
 Creating a new key is simple. All we need is;
-```sh
+```bash
 gpg --full-generate-key
 # Please select what kind of key you want:
 # ~ Various parameter selection questions depending on algorithm ~
@@ -96,7 +96,7 @@ Here are some pages for services that provide key pair generation docs.
 A public and or private key can be exported with `--export` + `--armour`|`--armour` to make it base64 readable rather than the otherwise default binary output. Both the default binary stream and the `--armour`'d base64 output can be imported with `--import`. If you are exporting and importing the private key, it includes the public key, so there is no need to do both.
 
 As far as we are concerned here with using GPG and the same keys across both WSL and Windows, we can create the keys in one, and export them then import them in the other, and then securely delete the exported private keys.
-```sh
+```bash
 # Export the public and private keys in binary
 gpg --export $ID > public.key
 gpg --export-secret-key $ID > private.key
@@ -114,6 +114,6 @@ gpg --edit-key $ID trust quit
 For GPG on Mac you will need both the [GPG](https://formulae.brew.sh/formula/gnupg) brew and the [pinentry-mac](https://formulae.brew.sh/formula/pinentry-mac) brew.
 
 You'll also need to set `~/.gnupg/gpg-agent.conf` to:
-```
+```txt
 pinentry-program /opt/homebrew/bin/pinentry-mac
 ```

@@ -1,5 +1,8 @@
 # [Devlog](https://github.com/Skenvy/dotfiles/blob/main/devlog.md)
 > [!CAUTION]
+> See ["How to approach reading my devlogs"](https://github.com/Skenvy/Skenvy/blob/main/extra/docs/devlog.md) if you need to.
+
+> [!WARNING]
 > A wild west of stuff that used to be in the readme, or are notes I wrote for myself. If you got here on an anchor link, that section should be relevant at least. But large chunks are just copy pasted paragraphs that have probably totally lost their initial context by now.
 ## Prelim
 <!-- don't change the below title, it's anchor linked-to -->

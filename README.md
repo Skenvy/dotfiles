@@ -12,6 +12,13 @@
 
 _This_ is _**my**_ dotfile repository. It follows the ["`$HOME` is a repo"](https://github.com/Skenvy/dotfiles/blob/main/devlog.md#home-is-a-repo) pattern, with bells attached. See the [devlog](https://github.com/Skenvy/dotfiles/blob/main/devlog.md) for more.
 
+> [!NOTE]
+> You can find more detailed instructions below on how to adopt any of these patterns.
+> 1. [Use as "`$HOME` is _this_ repo"](https://github.com/Skenvy/dotfiles/tree/home?tab=readme-ov-file#use-as-home-is-this-repo)
+> 1. [Use as "`$HOME` is _another_ repo"](https://github.com/Skenvy/dotfiles/tree/home?tab=readme-ov-file#use-as-home-is-another-repo)
+>
+> While this repo's `main` branch represents the core files for "`$HOME` is a repo", [GitHub Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles) only allow you to use the _default_ branch in a dotfiles repository, so my personal settings in my `home` branch are the default branch here (for use with Codespaces), but `main` is still perfectly viable.
+
 This dotfile repository is setup in a way that it follows "`$HOME` is a repo", in multiple ways.
 1. "`$HOME` is _this_ repo" -- you can directly clone this on top of `$HOME`.
     1. You can *clone* this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) (_my_ config, if you want the exact same config)
@@ -34,8 +41,14 @@ _My_ use cases are a combination of
 <p align="center"><img alt="Banner Image, Bless this mess" src="https://raw.githubusercontent.com/wiki/Skenvy/dotfiles/.meta/banners/bless_this_mess.png" width=1024 height=180/></p>
 
 ## Pre-use
-### `git`+`ssh`
-To use any approach, you'll need to have `git` installed, as well as `ssh`, and have the `ssh-agent` running, and your key added to the agent, and uploaded to GitHub. See [my ssh gist](https://gist.github.com/Skenvy/8e16d4f044707e63c670f5b487da02c0) for steps on how to handle setting up `ssh` on Ubuntu or Windows (pay close attention to the step for setting `"GIT_SSH"` if you're on Windows). If you already have `ssh` setup and `git` installed, then you're ready to continue to one of the below steps!
+### `git`
+To use any approach, you'll need to have `git` installed. See [git downloads](https://git-scm.com/downloads).
+### `ssh`
+Unless you swap the `ssh` remote in these instructions with the `https` remote, you'll also need `ssh`.
+
+You'll need to have the `ssh-agent` running, and your key added to the agent, and uploaded to GitHub. See [my ssh README](./.ssh/README.md) for steps on how to handle setting up `ssh` on Ubuntu or Windows (pay close attention to the step for setting `"GIT_SSH"` if you're on Windows). If you already have `ssh` setup, then you're ready to continue to one of the below steps!
+### `gpg`
+This is not a requirement for cloning and using this repository or following any of the further instructions, but if you are setting up a new machine for the first time, then [my GPG README](./.gnupg/README.md) might be worth a look, and is worth suggesting in the same tier as `git` and `ssh` being the three standard core programs for secure use of `git`, and being supported for use with devcontainers and codespaces.
 ### `~/.include/*`
 > [!IMPORTANT]
 > A critical feature that underpins all approaches to using these dotfiles effectively, you should be aware of this directory. Different config files are allowed to independently expect or optionally hook various files that should or must be kept under `~/.include/*`. They provide a means for "core" or "centralised" or "shared" configuration to be kept in this repository, but also allows "extensible" configuration files, that are "core" files with the ability to seek out "extension" configuration files, that needn't or shouldn't be checked-in here. "Extensible" just means files that can attempt to parse other files in `~/.include/*` and will composite or allow overwriting of "core" (checked-in here) config, by the "extension" configuration files that you will have to maintain in `~/.include/*`.
