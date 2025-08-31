@@ -12,6 +12,13 @@ These are general instructions relevant to `MacOS` setup. You probably want to t
 * Occasionally necessary fix to outdated Xcode Command Line Tools;
     * `sudo rm -rf /Library/Developer/CommandLineTools && sudo xcode-select --install`
 * See the [lockfile](https://github.com/Homebrew/homebrew-bundle/pull/552) at [~/.MacOS/Brewfile.lock.json](https://github.com/Skenvy/dotfiles/blob/main/.MacOS/Brewfile.lock.json) if necessary.
+## [GPG](https://gnupg.org/)
+For GPG on Mac you will need both the [GPG](https://formulae.brew.sh/formula/gnupg) brew and the [pinentry-mac](https://formulae.brew.sh/formula/pinentry-mac) brew.
+
+You'll also need to set `~/.gnupg/gpg-agent.conf` to:
+```
+pinentry-program /opt/homebrew/bin/pinentry-mac
+```
 ## [iTerm2](https://iterm2.com/)
 The settings expect [cowsay](https://formulae.brew.sh/formula/cowsay) to already be installed.
 

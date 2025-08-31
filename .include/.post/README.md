@@ -11,6 +11,7 @@ ssh-add-unloaded-key "Name_of_your_main_ssh_key"
 ```
 ## `.gitconfig`
 ### Non-OS dependent
+See the [GPG README](../../.gnupg/README.md) for instructions on setting the `signingkey`.
 ```ini
 [user]
     email = <???>
@@ -19,7 +20,9 @@ ssh-add-unloaded-key "Name_of_your_main_ssh_key"
 
 [commit]
     gpgsign = true
-    signingkey = <???>
+
+[tag]
+    gpgSign = true
 ```
 ## `.ssh_config`
 The `~/.ssh/config` includes `../.include/.post/.ssh_config`. You can keep config in `~/.ssh/config`, but additions to this **post** includes config **wont** act as overrides. You should use this inclusion if you have globbed `Host`'s in either the **pre** includes or the core config, that set some config across a wide glob, if you want to then add more specific config here, that sets previously unset config but on a more granular `Host`.

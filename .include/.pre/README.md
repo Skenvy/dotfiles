@@ -25,7 +25,7 @@
     symlinks = false
 
 [gpg]
-    program = <???>
+    program = C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe
 ```
 ### MacOS
 ```ini
