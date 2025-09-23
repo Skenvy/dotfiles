@@ -108,24 +108,24 @@ GLOBALLY_IGNORED_FILES=(
 # Iterate both lists to get a list of all collisions and non-collisions.
 ROOT_TRACKED=($(git -C "$_PWD" ls-tree --full-tree --name-only -r HEAD))
 for item in "${GLOBALLY_IGNORED_FILES[@]}"; do
-  ROOT_TRACKED=(${ROOT_TRACKED[@]//*$item*})
+  ROOT_TRACKED=("${ROOT_TRACKED[@]//*$item*}")
 done
 SUBMODULE_TRACKED=($(git -C "$_SUBMOD" ls-tree --full-tree --name-only -r HEAD))
 for item in "${GLOBALLY_IGNORED_FILES[@]}"; do
-  SUBMODULE_TRACKED=(${SUBMODULE_TRACKED[@]//*$item*})
+  SUBMODULE_TRACKED=("${SUBMODULE_TRACKED[@]//*$item*}")
 done
 TRACKED_FILES_COLLIDING=()
 TRACKED_FILES_NONCOLLIDING=()
-for subpath in ${SUBMODULE_TRACKED[@]}; do
+for subpath in "${SUBMODULE_TRACKED[@]}"; do
   _collided=0
-  for rootpath in ${ROOT_TRACKED[@]}; do
+  for rootpath in "${ROOT_TRACKED[@]}"; do
     if [ "$rootpath" == " $subpath " ] ; then
-      TRACKED_FILES_COLLIDING+=($subpath)
+      TRACKED_FILES_COLLIDING+=("$subpath")
       _collided=1
     fi
   done
   if [ "$_collided" == "0" ] ; then
-    TRACKED_FILES_NONCOLLIDING+=($subpath)
+    TRACKED_FILES_NONCOLLIDING+=("$subpath")
   fi
 done
 
@@ -155,7 +155,7 @@ else
       printf '    %s\n' "${TRACKED_FILES_COLLIDING[@]}";;
     'REPLACE')
       echo "  COLLISIONS FOUND, REPLACE -- REPLACING ROOT'S COPY WITH THIS'S";
-      for collider in ${TRACKED_FILES_COLLIDING[@]}; do
+      for collider in "${TRACKED_FILES_COLLIDING[@]}"; do
         echo " Copying $SUBMODULE_PATH/$collider over $collider"
         rm "$collider"
         cp "$SUBMODULE_PATH/$collider" "$collider"
@@ -171,7 +171,7 @@ fi
 action-onlylinks() {
   if [ "$FILE_ALREADY_EXISTS" == "false" ] ; then
     echo "    File $tracked_file doesn't exist yet. Linking to it."
-    mkdir -p "$(dirname $tracked_file)"
+    mkdir -p "$(dirname "$tracked_file")"
     ln -s "$_SUBMOD/$tracked_file" "$tracked_file"
   else
     if [ "$IS_SYMLINK_ALREADY" == "true" ] ; then
@@ -192,7 +192,7 @@ action-nodiff() {
   # action-onlylinks done before this, so we only need file exists not symlink
   if [ "$FILE_ALREADY_EXISTS" == "true" ] ; then
     if [ "$IS_SYMLINK_ALREADY" == "false" ] ; then
-      if [ "$(diff $tracked_file $SUBMODULE_PATH/$tracked_file)" == "" ] ; then
+      if [ "$(diff "$tracked_file" "$SUBMODULE_PATH/$tracked_file")" == "" ] ; then
         # Empty diff
         echo "    File $tracked_file has an empty diff, replace with symlink"
         rm "$tracked_file"
@@ -208,9 +208,9 @@ action-nodiff() {
 action-gracefully() {
   if [ "$FILE_ALREADY_EXISTS" == "true" ] ; then
     if [ "$IS_SYMLINK_ALREADY" == "false" ] ; then
-      if [ "$(diff $tracked_file $SUBMODULE_PATH/$tracked_file)" != "" ] ; then
+      if [ "$(diff "$tracked_file" "$SUBMODULE_PATH/$tracked_file")" != "" ] ; then
         # Exists, not a symlink, Non-empty diff :: backup and symlink
-        mkdir -p "$_PWD/.include/.clobbered/$(dirname $tracked_file)"
+        mkdir -p "$_PWD/.include/.clobbered/$(dirname "$tracked_file")"
         mv "$tracked_file" "$_PWD/.include/.clobbered/$tracked_file"
         ln -s "$_SUBMOD/$tracked_file" "$tracked_file"
         echo "    File $tracked_file has a non-empty diff, back it up first!"
@@ -221,7 +221,7 @@ action-gracefully() {
 
 echo
 echo CLOBBER_HOME is set to $CLOBBER_HOME;
-for tracked_file in ${TRACKED_FILES_NONCOLLIDING[@]}; do
+for tracked_file in "${TRACKED_FILES_NONCOLLIDING[@]}"; do
   echo "  Actioning $tracked_file"
   # Get "is a symlink and points to ..." status
   if [ -e "$tracked_file" ] ; then
@@ -231,7 +231,7 @@ for tracked_file in ${TRACKED_FILES_NONCOLLIDING[@]}; do
   fi
   if [ -L "$tracked_file" ] ; then
     IS_SYMLINK_ALREADY=true
-    if [ "$(readlink -f $tracked_file)" == "$_SUBMOD/$tracked_file" ] ; then
+    if [ "$(readlink -f "$tracked_file")" == "$_SUBMOD/$tracked_file" ] ; then
       SYMLINK_ALREADY_LINKS_TO_TARGET=true
     else
       SYMLINK_ALREADY_LINKS_TO_TARGET=false
@@ -254,7 +254,7 @@ for tracked_file in ${TRACKED_FILES_NONCOLLIDING[@]}; do
 #     DESTRUCTIVE means this wont do any checks, and just overwrite any existing
 #     file with a symlink to **these** files.
       echo "    Actioning destructively and forcefully..."
-      mkdir -p "$(dirname $tracked_file)"
+      mkdir -p "$(dirname "$tracked_file")"
       ln -sf "$_SUBMOD/$tracked_file" "$tracked_file"
       ;;
     'GRACEFULLY')
