@@ -105,15 +105,27 @@ GLOBALLY_IGNORED_FILES=(
 )
 
 # List files tracked in the repo root, and by this repo as a submodule.
+# Use ~ $(git -C "<directory>" ls-tree --full-tree --name-only -r HEAD)
+# But read it with readarray to handle entries with spaces.
+readarray -t _LS < <(git -C "$_PWD" ls-tree --full-tree --name-only -r HEAD)
+ROOT_TRACKED=()
+for item in "${_LS[@]}"; do
+  skip=
+  for ignore in "${GLOBALLY_IGNORED_FILES[@]}"; do
+    [[ "$item" == "$ignore" ]] && skip=1
+  done
+  [[ -z "$skip" ]] && ROOT_TRACKED+=("$item")
+done
+readarray -t _LS < <(git -C "$_SUBMOD" ls-tree --full-tree --name-only -r HEAD)
+SUBMODULE_TRACKED=()
+for item in "${_LS[@]}"; do
+  skip=
+  for ignore in "${GLOBALLY_IGNORED_FILES[@]}"; do
+    [[ "$item" == "$ignore" ]] && skip=1
+  done
+  [[ -z "$skip" ]] && SUBMODULE_TRACKED+=("$item")
+done
 # Iterate both lists to get a list of all collisions and non-collisions.
-ROOT_TRACKED=($(git -C "$_PWD" ls-tree --full-tree --name-only -r HEAD))
-for item in "${GLOBALLY_IGNORED_FILES[@]}"; do
-  ROOT_TRACKED=("${ROOT_TRACKED[@]//*$item*}")
-done
-SUBMODULE_TRACKED=($(git -C "$_SUBMOD" ls-tree --full-tree --name-only -r HEAD))
-for item in "${GLOBALLY_IGNORED_FILES[@]}"; do
-  SUBMODULE_TRACKED=("${SUBMODULE_TRACKED[@]//*$item*}")
-done
 TRACKED_FILES_COLLIDING=()
 TRACKED_FILES_NONCOLLIDING=()
 for subpath in "${SUBMODULE_TRACKED[@]}"; do
