@@ -27,6 +27,9 @@ alias wsl_resym_ssh="( shopt -s dotglob; WINDOWS_PATH=\"/mnt/c/Users/\$LOCAL_WIN
 alias yikes="git log --pretty=format:\"%T | %H | %P\""
 alias quack="git diff \$(git merge-base \$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) HEAD).. --stat"
 alias honk="git diff \$(git merge-base \$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) HEAD).."
+# If "git rev-parse --abbrev-ref origin/HEAD" in the following fails,
+# use "git ls-remote --symref origin HEAD" to verify the remote HEAD,
+# and if it's ok, re-run "git remote set-head origin --auto" to fix.
 alias pull_trunk="__=\$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) && git fetch origin \$__:\$__"
 alias merge_trunk="__=\$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) && git fetch origin \$__:\$__ && git merge \$__"
 alias merge_trunk_squash_theirs="__=\$(git rev-parse --abbrev-ref origin/HEAD | cut -d/ -f 2) && git fetch origin \$__:\$__ && git merge --squash -X theirs \$__"
