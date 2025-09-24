@@ -1,6 +1,6 @@
 {
   "dotfiles.repository": "git@github.com:Skenvy/dotfiles.git",
   "dotfiles.targetPath": "~/.dotfiles",
-  "dotfiles.installCommand": "~/.dotfiles/install.sh",
+  "dotfiles.installCommand": "install.sh",
   "workbench.colorTheme": "Default Dark Modern"
 }
