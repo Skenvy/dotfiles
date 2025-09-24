@@ -225,7 +225,7 @@ action-onlylinks() {
   if [ "$FILE_ALREADY_EXISTS" == "false" ] ; then
     echo "    File $tracked_file doesn't exist yet. Linking to it."
     mkdir -p "$(dirname "$tracked_file")"
-    ln -s "$_SUBMOD/$tracked_file" "$tracked_file"
+    ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
   else
     if [ "$IS_SYMLINK_ALREADY" == "true" ] ; then
       if [ "$SYMLINK_ALREADY_LINKS_TO_TARGET" == "true" ] ; then
@@ -233,7 +233,7 @@ action-onlylinks() {
       else
         echo "    Replacing exisitng link $tracked_file"
         rm "$tracked_file"
-        ln -s "$_SUBMOD/$tracked_file" "$tracked_file"
+        ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
       fi
     else
       echo "    File $tracked_file is not a symlink, ignore it -- ONLYLINKS"
@@ -249,7 +249,7 @@ action-nodiff() {
         # Empty diff
         echo "    File $tracked_file has an empty diff, replace with symlink"
         rm "$tracked_file"
-        ln -s "$_SUBMOD/$tracked_file" "$tracked_file"
+        ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
       else
         # Non-empty diff
         echo "    File $tracked_file has a non-empty diff, ignore it -- NODIFF"
@@ -265,7 +265,7 @@ action-gracefully() {
         # Exists, not a symlink, Non-empty diff :: backup and symlink
         mkdir -p "$_PWD/.include/.clobbered/$(dirname "$tracked_file")"
         mv "$tracked_file" "$_PWD/.include/.clobbered/$tracked_file"
-        ln -s "$_SUBMOD/$tracked_file" "$tracked_file"
+        ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
         echo "    File $tracked_file has a non-empty diff, back it up first!"
       fi
     fi
@@ -310,7 +310,7 @@ for tracked_file in "${TRACKED_FILES_NONCOLLIDING[@]}"; do
 #     file with a symlink to **these** files.
       echo "    Actioning destructively and forcefully..."
       mkdir -p "$(dirname "$tracked_file")"
-      ln -sf "$_SUBMOD/$tracked_file" "$tracked_file"
+      ln -srf "$_SUBMOD/$tracked_file" "$tracked_file"
       ;;
     'GRACEFULLY')
 #     GRACEFULLY will do DESTRUCTIVE but place files that were not previously
