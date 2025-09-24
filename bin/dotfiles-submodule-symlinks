@@ -60,7 +60,11 @@ VALIDATE_INPUT "CLOBBER_HOME" "ONLYLINKS|NODIFF|DESTRUCTIVE|GRACEFULLY"
 #     TEST means `pwd` can be anywhere. The purpose of this is to run within ~
 #     and it should alert you that you are not running it from $HOME, unless you
 #     set this to acknowledge you're intentionally running it elsewhere. Testing
-#     this script outside $HOME would be the primary reason for this.
+#     this script outside $HOME, or allowing this to be run by a script inside
+#     of a devcontainers build, would be the primary reasons for this. There is
+#     no easy way, or real reason either, to have a specific "DEVCONTAINERS"-ish
+#     context here, as the process inside the devcontainer build that runs the
+#     dotfiles setup does not provide the "dotfiles.targetPath" as an env var.
 : "${EXECUTION_CONTEXT:=HOME}"
 VALIDATE_INPUT "EXECUTION_CONTEXT" "HOME|TEST"
 
