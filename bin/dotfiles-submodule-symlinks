@@ -277,7 +277,9 @@ echo CLOBBER_HOME is set to $CLOBBER_HOME;
 for tracked_file in "${TRACKED_FILES_NONCOLLIDING[@]}"; do
   echo "  Actioning $tracked_file"
   # Get "is a symlink and points to ..." status
-  if [ -e "$tracked_file" ] ; then
+  # -e/-f track links and will say false if the _link_ is broken, so use -L to
+  # make sure we say the "file already exists" if the _broken link_ exists!
+  if [ -e "$tracked_file" ] || [ -L "$tracked_file" ]; then
     FILE_ALREADY_EXISTS=true
   else
     FILE_ALREADY_EXISTS=false
