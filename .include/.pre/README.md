@@ -4,6 +4,14 @@
 
 > [!WARNING]
 > Some of the examples here might only be relevant to this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) and not part of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main)
+
+> [!IMPORTANT]
+> All these files described here would appear in your `~/.include/.pre/`
+## `.bashrc`
+See the [SSH README](https://github.com/Skenvy/dotfiles/tree/main/.ssh#first-time-setup) to understand why you might want `LOCAL_WINDOWS_USERNAME` here.
+```bash
+LOCAL_WINDOWS_USERNAME=your-local-windows-user-name
+```
 ## `.gitconfig`
 ### Ubuntu
 ```ini
