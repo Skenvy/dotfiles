@@ -4,8 +4,11 @@
 
 > [!WARNING]
 > Some of the examples here might only be relevant to this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) and not part of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main)
-## `.bashrc`-example
-The included `.bashrc` file has a function `ssh-add-unloaded-key`, but doesn't add any ssh key itself. Rather, you should add a `.bashrc` file here, under `~/.include/.post/`, that uses this function with the name of your primary ssh key e.g.
+
+> [!IMPORTANT]
+> All these files described here would appear in your `~/.include/.post/`
+## `.bashrc`
+The included `~/.bashrc` file has a function `ssh-add-unloaded-key`, but doesn't add any ssh key itself. Rather, you should add a `.bashrc` file here that uses this function with the name of your primary ssh key e.g.
 ```bash
 ssh-add-unloaded-key "Name_of_your_main_ssh_key"
 ```
