@@ -18,11 +18,13 @@ See the docs on:
 * [SSH client conf](https://man.openbsd.org/ssh_config)
 * [SSH's "include" directive](https://man.openbsd.org/ssh_config#Include)
 * [Using ssh with vs code devcontainers](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials)
+
 ## First time setup
 > [!CAUTION]
-> This section is only relevant if you are setting up your dotfiles repo to check-in your `~/.ssh/config`, or looking for the discussion on sharing keys between `WSL` and `Windows`. If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
+> This section is only relevant if you are setting up your dotfiles repo to check-in your `~/.ssh/config`, or looking for the discussion on sharing keys between `WSL` and `Windows`.
+> If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
 ### Dotfiles
-To check-in our only user config for SSH, `~/.ssh/config`, in such a way that it can be extended when _this_ repo's [dotfile methodology](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#include) is followed, we make use of SSH's `Include` directive in our checked-in `~/.ssh/config`.
+To check-in our only user config for SSH, `~/.ssh/config`, in such a way that it can be extended when _this_ repo's [dotfile inclusion methodology](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#include) is followed, we make use of SSH's `Include` directive in our checked-in `~/.ssh/config`.
 
 To make it easier to use the same keys between a `Windows` machine and a `WSL` instance on it, we can symlink the keys _from_ Windows to WSL. If you would rather manually copy each of the keys as you make them, that won't interfere with the config being checked in, but it will mean the rest of this "setup" section will be irrelevant.
 ### Symlink the _whole_ directory (NOT checked-in config)
@@ -36,7 +38,7 @@ mkdir -p /mnt/c/Users/$YOUR_WINDOWS_USERNAME/.ssh
 ln -s /mnt/c/Users/$YOUR_WINDOWS_USERNAME/.ssh ~/.ssh
 ```
 ### Symlink each file/folder in the ssh folder (YES checked-in config)
-To support periodically re-symlinking all files (except for `~/.ssh/config` and _this file_ (`~/.ssh/README`)) from my Windows `~/.ssh` to my WSL's `~/.ssh`, I make use of the following two aliases, which require a `LOCAL_WINDOWS_USERNAME` to be set [somewhere](https://github.com/Skenvy/dotfiles/tree/home/.include/.pre#bashrc) (e.g. I personally set mine in my `~/.include/.pre/.bashrc`);
+To support periodically re-symlinking all files (except for `~/.ssh/config` and _this file_ (`~/.ssh/README`)) from my Windows `~/.ssh` to my WSL's `~/.ssh`, I make use of the following two aliases, which require a `LOCAL_WINDOWS_USERNAME` to be set [somewhere](https://github.com/Skenvy/dotfiles/tree/main/.include/.pre#bashrc) (e.g. I personally set mine in my `~/.include/.pre/.bashrc`);
 ```bash
 # LOCAL_WINDOWS_USERNAME set in some bashrc before these aliases are used
 alias tracking="git ls-tree --full-tree --name-only -r HEAD"
