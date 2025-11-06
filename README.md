@@ -17,8 +17,8 @@ We prefer the second format, because it lets the GitHub page just move to it -->
 
 > [!NOTE]
 > You can find more detailed instructions below on how to adopt any of these patterns.
-> 1. [Use as "`$HOME` is _this_ repo"](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#use-as-home-is-this-repo)
-> 1. [Use as "`$HOME` is _another_ repo"](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#use-as-home-is-another-repo)
+> 1. [Use as "`$HOME` is _this_ repo"](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#use-as-home-is-this-repo) (clone straight to `$HOME`)
+> 1. [Use as "`$HOME` is _another_ repo"](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#use-as-home-is-another-repo) (clone straight to `$HOME`, with this as a submodule)
 >
 > While this repo's `main` branch represents the core files for "`$HOME` is a repo", [GitHub Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles) only allow you to use the _default_ branch in a dotfiles repository, so my personal settings in my `home` branch are the default branch here (for use with Codespaces), but `main` is still perfectly viable.
 
