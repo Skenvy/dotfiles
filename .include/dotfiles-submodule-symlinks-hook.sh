@@ -7,8 +7,10 @@
 # also includes ignoring the three vs code settings, as they are added to this
 # base as an example, but should only be kept in this list if you are keeping
 # a different version in your copy of this base branch than the version you're
-# also keeping in your fork of this repo's main branch.
+# also keeping in your fork of this repo's main branch. We also ignore LICENSE,
+# so that the same CC-BY-SA can be checked in in main, home, and this base.
 CLOBBER_CHECKEDIN_ROOT_IGNORELIST=(
+"LICENSE"
 "install.sh"
 ".config/Code/User/settings.json"
 "Library/Application Support/Code/User/settings.json"
