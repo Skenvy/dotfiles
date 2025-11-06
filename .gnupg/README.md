@@ -24,6 +24,7 @@ See the docs on:
 ## First time setup
 > [!CAUTION]
 > This section is only relevant if you are setting up your dotfiles repo to check-in your `~/.gnupg/*.conf`.
+> Or to read about GitHub's vigilant mode.
 > If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
 ### Dotfiles
 To check-in our user config for GPG, `~/.gnupg/*.conf`, without being able to make use of our [dotfile inclusion methodology](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#include) _because GPG does not have any sort of inclusion mechanism_, yet still adhere to both patterns that we support (where this repo is either `$HOME` itself or a submodule that we symlink into `$HOME` with clobber protection), we must use the [`CLOBBER_CHECKEDIN_ROOT_IGNORELIST` option](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#dotfiles-submodule-symlinks) in our [submodule support script](./bin/dotfiles-submodule-symlinks) (see the example  [base dotfiles-submodule-symlinks-hook](https://github.com/Skenvy/dotfiles/blob/base/.include/dotfiles-submodule-symlinks-hook.sh) where you would need to list any gpg config files you would add to a repository that would submodule this one).
@@ -31,7 +32,9 @@ To check-in our user config for GPG, `~/.gnupg/*.conf`, without being able to ma
 The first time you run gpg it may or may not create any of the config files and populate them with some options. Most notably `use-keyboxd` is a default option that will frequently appear in `common.conf` these days.
 
 ### Vigilant mode
-See GitHub's [Enabling "vigilant mode"](https://docs.github.com/en/authentication/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits#enabling-vigilant-mode) docs.
+> [!IMPORTANT]
+> Don't let someone else impersonate you!
+> See GitHub's [Enabling "vigilant mode"](https://docs.github.com/en/authentication/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits#enabling-vigilant-mode) docs.
 
 Anyone can `git commit` with settings that will label their commits with your identity and `git push` them to any repository, which will show up as if _you_ authored the commit! Setting up gpg is not just to provide a method of guaranteeing authorship from the perspective solely of a repository maintainer / organisation, but also of guaranteeing that only commits you sign are demonstrably authored by you. Setting "vigilant mode" in GitHub will still allow non-signed commits claiming to be authored by you to be pushed, but they will display a status next to them that clearly marks them as "unverified" commits.
 
@@ -47,12 +50,14 @@ WSL doesn't currently have anything that matches `/etc/skel/.gnupg/*`, so for WS
 
 ## Install
 Install with the following, and use these commands to diagnose where you've installed to!
+
+We'll need to know the path that gpg was installed to later when setting the git config's `gpg.program`. These list the commands to use to ensure you're using the right path.
 1. Apt pkg gnupg for WSL ([`apt show gnupg` | `sudo apt install gnupg`](https://packages.ubuntu.com/search?keywords=gnupg))
-    * use `which -a gpg` (and `type gpg`)
+    * get the path with `which -a gpg` (and `type gpg`)
 1. Brew GPG for Mac ([`brew install gnupg`](https://formulae.brew.sh/formula/gnupg) | [`brew install pinentry-mac`](https://formulae.brew.sh/formula/pinentry-mac))
-    * use `which -a gpg` (and `type gpg`)
+    * get the path with `which -a gpg` (and `type gpg`)
 1. For Windows, the "Simple installer for the current GnuPG" on the [gnupg downloads](https://www.gnupg.org/download/) page is the easiest option.
-    * use `where gpg` (cmd) or `(Get-Command gpg).source` (pwsh)
+    * get the path with `where gpg` (cmd) or `(Get-Command gpg).source` (pwsh)
 
 > [!WARNING]
 > For Windows users, the included pin-entry program may not function properly if it is installed without specifically installing it as an admin. So make sure you install it as admin to ensure the pin-entry program works!
@@ -61,17 +66,17 @@ Install with the following, and use these commands to diagnose where you've inst
 >
 > If you have an install in your `AppData/Local` and you're experiencing issues with pin-entry, delete that install, clear the path entries for it, and reinstall as admin.
 >
-> Regardless of install location, `gpg --version` will tell you your `HOME` is in your `AppData/Roaming`. This is expected.
+> Regardless of install location, `gpg --version` on Windows will tell you your `HOME` is in your `AppData/Roaming`. This is expected.
 
 > [!CAUTION]
-> For Windows users we specifically recommend _against_ using the version of gpg packaged with `git bash`, that would have come packaged with [git for windows](https://git-scm.com/install/windows), as it can be significantly older than the current version on the [gnupg downloads](https://www.gnupg.org/download/) page, and it uses a different internal format to store keys.
+> For Windows users we specifically recommend _against_ using the version of gpg packaged with `git bash`, that would have been installed by [git for windows](https://git-scm.com/install/windows), as it can be significantly older than the current version on the [gnupg downloads](https://www.gnupg.org/download/) page, and it uses a different internal format to store keys. It will be the default gpg used by git inside of the `git bash` program, but will be difficult to use _outside_ of `git bash`.
 >
-> ONLY use "git bash" if you are planning on only ever using "git bash", it is very inconsistent with all the other options. If you're following this setup on Windows, use `cmd` or `powershell`.
+> ONLY use "git bash" if you are planning on only ever using "git bash", it is very inconsistent with all the other options. If you're following this setup on Windows, use `cmd` or `powershell` to do these steps on the recommended "Simple installer ..." version.
 
 ## Listing keys and configuring git
 > [!IMPORTANT]
 > If this is your first time, remember to come back to this section _after_ creating your key below.
-
+### Listing keys
 `gpg --list-keys` will show you a list of known keys. To see all _secret_ keys (with the key ID in the `pub`/`sec`)
 ```bash
 gpg --list-secret-keys --keyid-format=long
@@ -81,7 +86,10 @@ gpg --list-secret-keys --keyid-format=long
 gpg --armor --export 1234567890ABCDEF
 # Prints the GPG public key, in ASCII armor format
 ```
-From the `sec` line in this for the key we want to use, we take the 16 character key ID and...
+### Configuring GitHub
+If you're adding this key to GitHub, paste your pretty printed public key from the above's `--armour --export` into this [new gpg key form](https://github.com/settings/gpg/new).
+### Configuring git
+From the `sec` line in the example, for the key we want to use, we take the 16 character key ID and...
 ```bash
 git config --global user.signingkey 1234567890ABCDEF
 # If you don't set commit.gpgsign true, then you'll
@@ -93,7 +101,7 @@ git config --global --unset gpg.format # default openpgp
 git config --global gpg.program "<the path you got from which|where gpg>"
 ```
 For _**examples**_ of the `gpg.program` option across different OS, see the [pre includes README](../.include/.pre/README.md). If you aren't following along setting up your dotfiles as this repository suggests, the examples of `gpg.program` should go in your default `~/.gitconfig`.
-
+### Diagnose your git config
 > [!TIP]
 > If you're struggling to diagnose where a setting is getting applied or misapplied, you can use
 > ```bash
@@ -131,7 +139,8 @@ Here are some pages for services that provide key pair generation docs.
 ## Export/Import a key
 A public and or private key can be exported with `--export` + `--armour`|`--armour` to make it base64 readable rather than the otherwise default binary output. Both the default binary stream and the `--armour`'d base64 output can be imported with `--import`. If you are exporting and importing the private key, it includes the public key, so there is no need to do both.
 ### Export a public key for GitHub
-Refer to the above section on listing keys and configuring git. Use the example `gpg --armor --export 1234567890ABCDEF` with whatever your key's ID is. You should get a pretty printed public key block. Upload this entire output to your GitHub account settings.
+> [!TIP]
+> Refer to the above section on [listing keys and configuring git](../.gnupg/README.md#listing-keys-and-configuring-git). Use the example `gpg --armor --export 1234567890ABCDEF` with whatever your key's ID is. You should get a pretty printed public key block. Upload this entire output to your [GitHub account settings "SSH and GPG keys"](https://github.com/settings/keys) ([new gpg key entry form](https://github.com/settings/gpg/new)).
 ### Exporting and Importing between Windows and WSL
 As far as we are concerned here with using GPG and the same keys across both WSL and Windows, we can create the keys in one, and export them then import them in the other, and then securely delete the exported private keys.
 ```bash
@@ -149,6 +158,23 @@ gpg --edit-key $ID trust quit
 ```
 ## Expired keys
 These very useful sonatype docs will show you about [dealing with expired keys](https://central.sonatype.org/publish/requirements/gpg/#dealing-with-expired-keys).
+## Keyservers
+> [!TIP]
+> The key ID you get from listing keys with the option `--keyid-format=long` is the last 16 characters of the full 40 character ID.
+> ```bash
+> # Note the FULL 40 character key ID will appear underneath the sec line, like;
+> # sec   <Algo>/<16-char-short-key-ID> <date-created> [SC] [expires: <expiry>]
+> #       <24-leading-char-key-ID><16-char-short-key-ID>
+> # e.g. my public key on several keyservers
+> # sec   rsa3072/C203EA8449D06C1B 2022-05-26 [SC] [expires: 2030-06-11]
+> #       F398EA6448A7708EAABBB0DEC203EA8449D06C1B
+> ```
+> You can upload your public key to a keyserver if necessary, using, per this example
+> ```bash
+> # gpg --keyserver <keyserver-host> --send-keys <40-char-key-ID>
+> gpg --keyserver keyserver.ubuntu.com --send-keys F398EA6448A7708EAABBB0DEC203EA8449D06C1B
+> ```
+> This example shows _my_ key uploaded to the ubuntu keyserver [F398EA6448A7708EAABBB0DEC203EA8449D06C1B](https://keyserver.ubuntu.com/pks/lookup?search=F398EA6448A7708EAABBB0DEC203EA8449D06C1B&fingerprint=on&op=index), your key ID will obviously be different.
 ## Pin-entry
 ### Mac
 For GPG on Mac you will need both the [GPG](https://formulae.brew.sh/formula/gnupg) brew and the [pinentry-mac](https://formulae.brew.sh/formula/pinentry-mac) brew.
