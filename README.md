@@ -129,7 +129,7 @@ More than likely, `~` won't be empty, so `git` will refuse to clone into it.
 
 ## Use as "`$HOME` is _another_ repo"
 > [!WARNING]
-> This pattern will make use of a [script](./bin/dotfiles-submodule-symlinks) which currently is only written for Ubuntu/Mac. If you want to use this pattern on a Windows machine, you'll either need to create a PowerShell equivalent of this script, or manually create junctions for each file you want to "windows symlink" from your `~/dotfiles` submodule into your `~/` home.
+> This pattern currently only works for Ubuntu/Mac. See why in the [devlog](./devlog.md#using-home-is-another-repo).
 
 If you would like to utilise the configurations here as a base, but also be able to add and track your own `.include` files, then adding this as a submodule is what you want.
 Using submodules, you can include and refer to this dotfiles repository inside of _another_ dotfiles repo, where you can track this repository and use its contents without ending up with a cluttered repository, while also maintaining your own `.include` files, as well as checking them in, whether for a public or private dotfiles repo.
