@@ -1,11 +1,52 @@
 #!/bin/bash
 
-# This assumes that it lives inside a submodule of a dotfiles repository that
-# itself lives in the home directory, e.g. this file should exist with path
-# ~/dotfiles/bin/submodule-symlink.sh
+# This script is used to symlink dotfiles from a submodule of a repo checked out
+# in $HOME, to place symlinks in $HOME that point to the dotfiles in submodules.
 
-# Use this to write symlinks for the symlinkable files over the top of files as
-# they exist in home.
+# The expected use is that this repo has been added as a submodule to another as
+# is written in the `Use as "`$HOME` is _another_ repo"` section of the README.
+
+# E.g. given the assumption this file is at ~/dotfiles/bin/submodule-symlink.sh,
+# It would be called as `cd ~ && ./dotfiles/bin/dotfiles-submodule-symlinks`.
+
+# _THIS_ script supports both modern MacOS and Ubuntu (WSL). It has inputs to
+# request that it use the BSD util's options but is not tested on other BSDs.
+
+################################################################################
+# Before we start, we need to do some minor house-keeping. We support this for
+# use in Ubuntu and MacOS. But it uses a _system bash_ shebang. It used features
+# from bash v4 (readarray) and v4.3 (namerefs). We only plan to support Linux's
+# with a bash version that supports both of these. MacOS (Darwin) on the other
+# hand does not have a system bash that supports these. It's stuck on an ancient
+# version of bash (v3.2.*). We support this with in-situ swapsies. So just check
+# we're in an environment we expect to be compatible.
+echo # Newline
+echo "Starting $0..."
+printf '#%.0s' {1..80} && echo
+if [ "$(uname)" = "Darwin" ]; then
+  NAME_VERSION="$(sw_vers -productName) $(sw_vers -productVersion)"
+  PROCTOR_OLD_BASH=true
+  PROCTOR_BSD_UTIL=true
+elif [ "$(uname)" = "Linux" ]; then
+  NAME_VERSION="$( . /etc/os-release && echo "$NAME $VERSION" )"
+  PROCTOR_OLD_BASH=false
+  PROCTOR_BSD_UTIL=false
+  # If this detects we _aren't_ on MacOS then we'll default to assuming we don't
+  # need to bubble wrap an older bash. OotB, we'll support automatically bubble
+  # wrapping MacOS's old bash, or working with more recent bash. If you are on
+  # linux but DO have an older bash, you can set PROCTOR_OLD_BASH in the HOOK~
+  # See the DSS_HOOKIN_SOURCE section below for more... The same applies to the
+  # BSD variety of coreutils that MacOS uses as opposed to GNU coreutils.
+else
+  echo "Detected neither the darwin or the linux kernel. Stopping!"
+  exit 127
+fi
+echo "RUNNING IN THE $(uname -sr) KERNEL ($NAME_VERSION) -- SYSTEM BASH IS..."
+printf '#%.0s' {1..80} && echo
+echo "$(/bin/bash --version)"
+printf '#%.0s' {1..80} && echo
+################################################################################
+# Now we've sorted out whether we can run or not... run...
 
 VALIDATE_INPUT() {
 eval "
@@ -31,6 +72,14 @@ DSS_HOOKIN_SOURCE_DEFAULT=".include/dotfiles-submodule-symlinks-hook.sh"
 #     except for explicitely approved clobbering files in this list. This is
 #     where you would list for example gpg config files, as they are core to
 #     this basic dotfiles setup, but are not themselves extendible / includable.
+# PROCTOR_BSD_UTIL can be set to "true" if you want to manually configure this
+#     to enact the same protections it has in place to ensure it operates OotB
+#     on MacOS (which uses BSD coreutils and not GNU...). Use this if you're on
+#     a BSD derivative.
+# PROCTOR_OLD_BASH can be set to "true" if you want to manually configure this
+#     to enact the same protections it has in place to ensure it operates OotB
+#     on MacOS (which has an ancient version of bash...). Use this if you're on
+#     Linux but stuck with an older system /bin/bash you can't upgrade.
 
 # CLOBBER_CHECKEDIN_ROOT defaults to ERROR
 #     ERROR means that if a file is checked in in both the root module and this
@@ -78,7 +127,7 @@ _PWD="$(pwd)" # ~= "~"
 _SUBMOD="$_PWD/$SUBMOD_PATH" # ~= "~/dotfiles"
 _HOOK_SOURCE="$_PWD/$DSS_HOOKIN_SOURCE"
 
-echo
+echo # Newline
 echo "SUBMODULE PATH IS SET TO $SUBMOD_PATH"
 echo "HOOK-IN PATH IS SET TO $DSS_HOOKIN_SOURCE"
 if [ "$EXECUTION_CONTEXT" == "HOME" ]; then
@@ -143,26 +192,55 @@ IGNORED_FILES=(
 "${CLOBBER_CHECKEDIN_ROOT_IGNORELIST[@]}"
 )
 
+# Mac's ("Darwin") bash is _ancient_ (`bash --version` ~= 3.2.*) so if we are in
+# a Darwin kernel, we need to proctor readarray (bash 4+) to make the command
+# available in older bashes. Usage: _readarray_ ARRAYNAME < <(git ...)
+_readarray_() {
+  local _arr_name="$1"
+  if [ "$PROCTOR_OLD_BASH" == "true" ]; then
+    local line
+    local arr=()
+    while IFS= read -r line; do
+      arr+=("$line")
+    done
+    # write back to the named array variable
+    eval "$_arr_name=(\"\${arr[@]}\")"
+  else
+    local __tmp
+    readarray -t __tmp
+    eval "$_arr_name=(\"\${__tmp[@]}\")"
+    unset __tmp
+  fi
+}
+
 # List files tracked in the repo root, and by this repo as a submodule.
 # Use ~ $(git -C "<directory>" ls-tree --full-tree --name-only -r HEAD)
 # But read it with readarray to handle entries with spaces.
+# Usage: filter_array SOURCE_ARRAY_NAME IGNORE_ARRAY_NAME RESULT_ARRAY_NAME
 filter_array() {
-  local -n arr=$1
-  local -n ignore_list=$2
-  local -n ret=$3
+  local array_name="$1"
+  local ignore_list_name="$2"
+  local ret_name="$3"
   local -a filtered=()
+  local item
+  # copy the arrays into locals
+  eval "local arr=(\"\${${array_name}[@]}\")"
+  eval "local ignore_list=(\"\${${ignore_list_name}[@]}\")"
   for item in "${arr[@]}"; do
     skip=
+    local ignore
     for ignore in "${ignore_list[@]}"; do
-      [[ "$item" == "$ignore" ]] && skip=1
+      [[ "$item" == "$ignore" ]] && skip=1 && break
     done
     [[ -z "$skip" ]] && filtered+=("$item")
   done
-  ret=("${filtered[@]}")
+  # set the result array by name
+  eval "$ret_name=(\"\${filtered[@]}\")"
 }
-readarray -t _LS < <(git -C "$_PWD" ls-tree --full-tree --name-only -r HEAD)
+
+_readarray_ _LS < <(git -C "$_PWD" ls-tree --full-tree --name-only -r HEAD)
 filter_array _LS IGNORED_FILES ROOT_TRACKED
-readarray -t _LS < <(git -C "$_SUBMOD" ls-tree --full-tree --name-only -r HEAD)
+_readarray_ _LS < <(git -C "$_SUBMOD" ls-tree --full-tree --name-only -r HEAD)
 filter_array _LS IGNORED_FILES SUBMODULE_TRACKED
 # Iterate both lists to get a list of all collisions and non-collisions.
 TRACKED_FILES_COLLIDING=()
@@ -222,6 +300,20 @@ else
   esac
 fi
 
+# Wrap `ln -s` for use on MacOS. BSD's ln doesn't have a relative -r option. We
+# only really needed the relative links in WSL anyway...
+_ln_s_() {
+  local bsd_opts="$1"
+  local gnu_opts="$2"
+  local actual_file="$3"
+  local symlink_name="$4"
+  if [[ "$PROCTOR_BSD_UTIL" == "true" ]]; then
+    eval "ln -s$bsd_opts \"$actual_file\" \"$symlink_name\""
+  else
+    eval "ln -s$gnu_opts \"$actual_file\" \"$symlink_name\""
+  fi
+}
+
 # Now we've dealt with the "checked in, tracked files" that collide, we can deal
 # with the non-checked in files, which each need their own collision check.
 
@@ -229,7 +321,7 @@ action-onlylinks() {
   if [ "$FILE_ALREADY_EXISTS" == "false" ] ; then
     echo "    File $tracked_file doesn't exist yet. Linking to it."
     mkdir -p "$(dirname "$tracked_file")"
-    ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
+    _ln_s_ "" "r" "$_SUBMOD/$tracked_file" "$tracked_file"
   else
     if [ "$IS_SYMLINK_ALREADY" == "true" ] ; then
       if [ "$SYMLINK_ALREADY_LINKS_TO_TARGET" == "true" ] ; then
@@ -237,7 +329,7 @@ action-onlylinks() {
       else
         echo "    Replacing exisitng link $tracked_file"
         rm "$tracked_file"
-        ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
+        _ln_s_ "" "r" "$_SUBMOD/$tracked_file" "$tracked_file"
       fi
     else
       echo "    File $tracked_file is not a symlink, ignore it -- ONLYLINKS"
@@ -253,7 +345,7 @@ action-nodiff() {
         # Empty diff
         echo "    File $tracked_file has an empty diff, replace with symlink"
         rm "$tracked_file"
-        ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
+        _ln_s_ "" "r" "$_SUBMOD/$tracked_file" "$tracked_file"
       else
         # Non-empty diff
         echo "    File $tracked_file has a non-empty diff, ignore it -- NODIFF"
@@ -269,7 +361,7 @@ action-gracefully() {
         # Exists, not a symlink, Non-empty diff :: backup and symlink
         mkdir -p "$_PWD/.include/.clobbered/$(dirname "$tracked_file")"
         mv "$tracked_file" "$_PWD/.include/.clobbered/$tracked_file"
-        ln -sr "$_SUBMOD/$tracked_file" "$tracked_file"
+        _ln_s_ "" "r" "$_SUBMOD/$tracked_file" "$tracked_file"
         echo "    File $tracked_file has a non-empty diff, back it up first!"
       fi
     fi
@@ -314,7 +406,7 @@ for tracked_file in "${TRACKED_FILES_NONCOLLIDING[@]}"; do
 #     file with a symlink to **these** files.
       echo "    Actioning destructively and forcefully..."
       mkdir -p "$(dirname "$tracked_file")"
-      ln -srf "$_SUBMOD/$tracked_file" "$tracked_file"
+      _ln_s_ "f" "rf" "$_SUBMOD/$tracked_file" "$tracked_file"
       ;;
     'GRACEFULLY')
 #     GRACEFULLY will do DESTRUCTIVE but place files that were not previously
