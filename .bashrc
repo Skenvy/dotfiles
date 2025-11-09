@@ -60,15 +60,25 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# PS1 Colours
+RED=$(printf '\e[91m')
+YELLOW=$(printf '\e[38;5;226m')
+RESET=$(printf '\e[0m')
+
 # Git branch for prompt
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+# $SHLVL for prompt
+prompt_shlvl() {
+    echo "[${SHLVL}]"
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\e[91m\]$(parse_git_branch)\[\e[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]${RED}$(parse_git_branch)${YELLOW}$(prompt_shlvl)${RESET}\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)$(prompt_shlvl)\$ '
 fi
 unset color_prompt force_color_prompt
 
