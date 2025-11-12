@@ -1,0 +1,276 @@
+# ~/.bash_formatting, sourced by ~/.bashrc
+################################################################################
+# We just list some ANSI <Esc> (0x1B) "Format sequences" here...
+
+# Each escape sequence starts with the 0x1B byte: Use '\e', '\033', or '\x1B'.
+# Formatting instructions take the form of "<0x1B Byte>" followed by a literal
+# "[", then one of any of the "format codes", and finished with a literal "m".
+
+# Not every terminal or emulator is capable of all of these, so some formatting
+# _may_ end up lost on your terminal and appear unformatted. To test any format
+# on your terminal you can `echo -e "Test \e[0mformatted text"`. "\e[0m" is the
+# RESET command though, so that will just appear as regular text. For a more
+# whimsical test, use this echo to sample several colours and style ~
+# echo -e "\e[0m\e[91;7;4;1mR\e[93mA\e[92mI\e[94mN\e[96mB\e[95mO\e[35mW"
+# (We set them with printf, but `echo -e ""` will show you the same result).
+
+# As you can see from that example, we can _combine_ multiple codes in a single
+# formatting command ~ e.g. "\e[1;2;3m" would be the same as "\e[1m\e[2m\e[3m"!
+# We can combine the formatting codes seperated by singular ";".
+
+################################################################################
+#####       Very important side-note for using these in a PS1 or PS2       #####
+# When using these in a PS1 / PS2 or anywhere else you need your cursor to be
+# aware of the width of your prompt, wrap the use of these with the control
+# sequence used to indicate that the characters of the formatting command should
+# not count towards the prompt width. These are "\[" and "\]". They are easiest
+# to use reliably directly in the PS1. So we provide all these formatting codes
+# and expect them to be used in a single quoted PS1 like '\[${FMT_VAR_NAME}\]'.
+# I haven't found a clean way to add the control sequences for zero-width'ing to
+# variables and have them behave consistently in either single OR double quotes!
+################################################################################
+
+# Source of truth for what each code should mean is in ECMA-48 secion 8.3.117
+# https://ecma-international.org/publications-and-standards/standards/ecma-48
+# We list the codes in numerical order, but some are rarely implemented, e.g.
+# fast and slow blink are not supported in modern GNOME.
+
+# Also see https://www.iso.org/obp/ui/en/#iso:std:iso-iec:6429:ed-3:v1:en
+# The ISO/IEC 6429 standard. But I'm not paying $1000's for an ISO PDF...
+
+# For codes beyond the SGR / ECMA-48, xterm implemented additional codes for
+# 16-colour support, then for 8-bit support (256-colours), then later again for
+# 24-bit support (RGB). As best I can track down, the source of truth for 16
+# colour support comes from the blog https://invisible-island.net/ of the author
+# of xterm. https://invisible-island.net/xterm/ctlseqs/ctlseqs.html specifically
+# under the "Functions using CSI , ordered by the final character(s)" section,
+# subsection "CSI Pm m  Character Attributes (SGR)."
+
+# Also see https://www.iso.org/obp/ui/en/#iso:std:iso-iec:8613:-6:ed-1:v1:en
+# For ISO/IEC 8613-6, which describes "88 colour" and "256 colour" schemes as
+# the original source for these, later added in xterm. These use the codes left
+# for "future use" / reserved in SGR -- namely code 38 and 48, with a subcode to
+# address a specific colour within the 88 / 256 colour space.
+
+################################################################################
+# Codes 0 to 65 per ECMA-48 secion 8.3.117
+# The original SGR standard 1-49
+# Later versions of ECMA-48 added 50-65
+################################################################################
+
+# Formatting: Reset everything to default
+ANSI_ESCFMT_RESET_DEFAULT=$(printf '\e[0m')
+
+# Formatting: Set "things"
+ANSI_ESCFMT_SET_BOLD=$(printf '\e[1m')
+ANSI_ESCFMT_SET_FAINT=$(printf '\e[2m')
+ANSI_ESCFMT_SET_ITALIC=$(printf '\e[3m')
+ANSI_ESCFMT_SET_UNDERLINE=$(printf '\e[4m')
+ANSI_ESCFMT_SET_BLINK_SLOW=$(printf '\e[5m')
+ANSI_ESCFMT_SET_BLINK_FAST=$(printf '\e[6m')
+ANSI_ESCFMT_SET_INVERTED=$(printf '\e[7m')
+ANSI_ESCFMT_SET_CONCEALED=$(printf '\e[8m')
+ANSI_ESCFMT_SET_STRIKETHROUGH=$(printf '\e[9m')
+
+# Alternative Fonts ~ rarely or not implemented in modern terminals.
+ANSI_ESCFMT_FONT_DEFAULT=$(printf '\e[10m')
+ANSI_ESCFMT_FONT_ALT_1=$(printf '\e[11m')
+ANSI_ESCFMT_FONT_ALT_2=$(printf '\e[12m')
+ANSI_ESCFMT_FONT_ALT_3=$(printf '\e[13m')
+ANSI_ESCFMT_FONT_ALT_4=$(printf '\e[14m')
+ANSI_ESCFMT_FONT_ALT_5=$(printf '\e[15m')
+ANSI_ESCFMT_FONT_ALT_6=$(printf '\e[16m')
+ANSI_ESCFMT_FONT_ALT_7=$(printf '\e[17m')
+ANSI_ESCFMT_FONT_ALT_8=$(printf '\e[18m')
+ANSI_ESCFMT_FONT_ALT_9=$(printf '\e[19m')
+ANSI_ESCFMT_FONT_FRAKTUR=$(printf '\e[20m')
+
+# Formatting: Set "one more thing"
+ANSI_ESCFMT_SET_DOUBLE_UNDERLINE=$(printf '\e[21m')
+
+# Formatting: Unset "things"
+ANSI_ESCFMT_UNSET_BOLD=$(printf '\e[22m')
+ANSI_ESCFMT_UNSET_FAINT="$ANSI_ESCFMT_UNSET_BOLD"
+ANSI_ESCFMT_UNSET_ITALIC=$(printf '\e[23m')
+ANSI_ESCFMT_UNSET_UNDERLINE=$(printf '\e[24m')
+ANSI_ESCFMT_UNSET_BLINK=$(printf '\e[25m')
+# 26 Reserved
+ANSI_ESCFMT_UNSET_INVERTED=$(printf '\e[27m')
+ANSI_ESCFMT_UNSET_CONCEALED=$(printf '\e[28m')
+ANSI_ESCFMT_UNSET_STRIKETHROUGH=$(printf '\e[29m')
+
+# Text colours
+ANSI_ESCFMT_TEXT_BLACK=$(printf '\e[30m')
+ANSI_ESCFMT_TEXT_RED=$(printf '\e[31m')
+ANSI_ESCFMT_TEXT_GREEN=$(printf '\e[32m')
+ANSI_ESCFMT_TEXT_YELLOW=$(printf '\e[33m')
+ANSI_ESCFMT_TEXT_BLUE=$(printf '\e[34m')
+ANSI_ESCFMT_TEXT_MAGENTA=$(printf '\e[35m')
+ANSI_ESCFMT_TEXT_CYAN=$(printf '\e[36m')
+ANSI_ESCFMT_TEXT_WHITE=$(printf '\e[37m')
+# 38 Reserved
+ANSI_ESCFMT_TEXT_DEFAULT=$(printf '\e[39m')
+
+# Background colours
+ANSI_ESCFMT_BACKGROUND_BLACK=$(printf '\e[40m')
+ANSI_ESCFMT_BACKGROUND_RED=$(printf '\e[41m')
+ANSI_ESCFMT_BACKGROUND_GREEN=$(printf '\e[42m')
+ANSI_ESCFMT_BACKGROUND_YELLOW=$(printf '\e[43m')
+ANSI_ESCFMT_BACKGROUND_BLUE=$(printf '\e[44m')
+ANSI_ESCFMT_BACKGROUND_MAGENTA=$(printf '\e[45m')
+ANSI_ESCFMT_BACKGROUND_CYAN=$(printf '\e[46m')
+ANSI_ESCFMT_BACKGROUND_WHITE=$(printf '\e[47m')
+# 48 Reserved
+ANSI_ESCFMT_BACKGROUND_DEFAULT=$(printf '\e[49m')
+
+# Formatting: Set/Unset more niche things
+# 50 Reserved for unsetting 26
+ANSI_ESCFMT_SET_FRAMED=$(printf '\e[51m')
+ANSI_ESCFMT_SET_ENCIRCLED=$(printf '\e[52m')
+ANSI_ESCFMT_SET_OVERLINED=$(printf '\e[53m')
+ANSI_ESCFMT_UNSET_FRAMED=$(printf '\e[54m')
+ANSI_ESCFMT_UNSET_ENCIRCLED="$ANSI_ESCFMT_UNSET_FRAMED"
+ANSI_ESCFMT_UNSET_OVERLINED=$(printf '\e[55m')
+# 56 Reserved
+# 57 Reserved
+# 58 Reserved
+# 59 Reserved
+
+# Ideogram?
+ANSI_ESCFMT_IDEOGRAM_SET_UNDER_OR_RIGHT_SINGLELINE=$(printf '\e[60m')
+ANSI_ESCFMT_IDEOGRAM_SET_UNDER_OR_RIGHT_DOUBLELINE=$(printf '\e[61m')
+ANSI_ESCFMT_IDEOGRAM_SET_OVER_OR_LEFT_SINGLELINE=$(printf '\e[62m')
+ANSI_ESCFMT_IDEOGRAM_SET_OVER_OR_LEFT_DOUBLELINE=$(printf '\e[63m')
+
+ANSI_ESCFMT_IDEOGRAM_SET_STRESS=$(printf '\e[64m')
+
+ANSI_ESCFMT_IDEOGRAM_RESET=$(printf '\e[65m')
+
+################################################################################
+# Codes 90-97 + 100-107 from xterm's 16 colour support
+################################################################################
+
+# Text colours
+ANSI_ESCFMT_TEXT_16C_BLACK=$(printf '\e[90m')
+ANSI_ESCFMT_TEXT_16C_RED=$(printf '\e[91m')
+ANSI_ESCFMT_TEXT_16C_GREEN=$(printf '\e[92m')
+ANSI_ESCFMT_TEXT_16C_YELLOW=$(printf '\e[93m')
+ANSI_ESCFMT_TEXT_16C_BLUE=$(printf '\e[94m')
+ANSI_ESCFMT_TEXT_16C_MAGENTA=$(printf '\e[95m')
+ANSI_ESCFMT_TEXT_16C_CYAN=$(printf '\e[96m')
+ANSI_ESCFMT_TEXT_16C_WHITE=$(printf '\e[97m')
+
+# Background colours
+ANSI_ESCFMT_BACKGROUND_16C_BLACK=$(printf '\e[100m')
+ANSI_ESCFMT_BACKGROUND_16C_RED=$(printf '\e[101m')
+ANSI_ESCFMT_BACKGROUND_16C_GREEN=$(printf '\e[102m')
+ANSI_ESCFMT_BACKGROUND_16C_YELLOW=$(printf '\e[103m')
+ANSI_ESCFMT_BACKGROUND_16C_BLUE=$(printf '\e[104m')
+ANSI_ESCFMT_BACKGROUND_16C_MAGENTA=$(printf '\e[105m')
+ANSI_ESCFMT_BACKGROUND_16C_CYAN=$(printf '\e[106m')
+ANSI_ESCFMT_BACKGROUND_16C_WHITE=$(printf '\e[107m')
+
+################################################################################
+# Code 38 and 48 from ISO-8613-6 adopted in xterm -- from xterm blog --
+# Ps = 3 8 : 2 : Pi : Pr : Pg : Pb ⇒  Set foreground color using RGB values
+#   ~ read as '\e[38;5;<R~0-255>;<G~0-255>;<B~0-255>m' e.g. '\e[38;2;191;0;255m'
+# Ps = 3 8 : 5 : Ps ⇒  Set foreground color to Ps
+#   ~ read as '\e[38;5;<0-255>m' e.g. '\e[38;5;199m'
+# Ps = 4 8 : 2 : Pi : Pr : Pg : Pb ⇒  Set background color using RGB values
+#   ~ read as '\e[48;5;<R~0-255>;<G~0-255>;<B~0-255>m' e.g. '\e[48;2;230;0;0m'
+# Ps = 4 8 : 5 : Ps ⇒  Set background color to Ps
+#   ~ read as '\e[48;5;<0-255>m' e.g. '\e[48;5;228m'
+################################################################################
+
+# We could theoretically add 256 entries for both foreground and background
+# to encapsulate the '\e[<38|48>;5;<0-255>m' ranges, but we are absolutely not
+# adding the 16,777,216 colours of RGB for _either_.... that would be bonkers.
+# If you want full RGB, add it yourself lol. I'm not doing near 33ish million
+# variable assignments. But we will do the 256-colour scheme.
+
+# Before we do though, we will set two aliases.. use these aliases if you need
+# to sample how these colours for the foreground text and the background render
+# in your terminal.
+
+# A side-note is that the colour ranges from 0 to 255. I am not sure if there is
+# a standard somewhere that explicitely says how higher numbers are _supposed_
+# to be handled, but as far as I can tell, once they hit higher than 255, the
+# number is modulod 256. E.g. "200" is treated identical to "456". I don't know
+# why you'd do this though, there's no point to...
+
+alias DISPLAY_256_PALETTE_FOREGROUND='for i in {0..255}; do printf \
+"\e[38;5;${i}m%3d " "$i";((i%16==15))&& printf "\e[0m\n";done;printf "\e[0m\n"'
+alias DISPLAY_256_PALETTE_BACKGROUND='for i in {0..255}; do printf \
+"\e[48;5;${i}m%3d " "$i";((i%16==15))&& printf "\e[0m\n";done;printf "\e[0m\n"'
+
+# For a text or background colour you like from these, you use that colour via
+# either '\e[38;5;<foreground-colour>m' or '\e[48;5;<background-colour>m'
+
+# To use the RGB colours just find the RGB of the colour you like and put it in
+# '\e[38;2;R;G;Bm' or '\e[48;2;R;G;Bm' -- if you need inspiration idk look at
+# https://en.wikipedia.org/wiki/List_of_colors_(alphabetical)
+
+# However, with either 256-colours or 24-bit RGB scheme, keep in mind that the
+# background colour can significantly overpower the foreground text colour to
+# point of making it appear white if your background is bright enough and your
+# text is lighter. E.g. these two examples..
+# echo -e "\e[48;5;199m\e[38;5;155mHowdy\e[0m" # very strong background...
+# echo -e "\e[48;5;52m\e[38;5;155mHowdy\e[0m" # darker background, easier text
+
+# Right before doing this next section is probably the only point now that it
+# becomes relevant to mention that, leading 0's are not significant in codes.
+# That is to say, the code '\e[38;5;100m' is identical to '\e[00038;005;0100m'!
+# This is relevant in the next section because it's easiest to just mass edit!
+
+################################################################################
+# Code 38;5;<0-255> and 48;5;<0-255> from ISO-8613-6 adopted in xterm
+# I don't need or really want to load all these all the time, so instead of
+# adding them all here, I'll just leave a way for you to add them if you have
+# forked / cloned this / copied this.
+
+# This breaks from the tone up to here being as generic as possible. These are
+# patterns specific to the dotfiles repo that contains this file. You can use
+# this without needing to know how the rest of it works though. Run one of these
+# to generate the additional config if you need / want it.
+
+source-existing-file() { if [ -f "$1" ]; then source "$1"; fi; }
+FILE_ADDITIONAL_FORMATS_OUTPUT=~/.include/.bash_formatting_extra
+source-existing-file $FILE_ADDITIONAL_FORMATS_OUTPUT
+
+ANSI_ESCFMT_GENERATE_ALL_256C_FOREGROUNDS() {
+  mkdir -p ~/.include
+  echo "# See ~/.bash_formatting" > $FILE_ADDITIONAL_FORMATS_OUTPUT
+  for k in {0..255}; do
+    printf 'ANSI_ESCFMT_TEXT_256C_%d=$(printf "\\e[38;5;%dm")\n' "$k" "$k" \
+    >> $FILE_ADDITIONAL_FORMATS_OUTPUT
+  done
+  source-existing-file $FILE_ADDITIONAL_FORMATS_OUTPUT
+}
+
+ANSI_ESCFMT_GENERATE_ALL_256C_BACKGROUNDS() {
+  mkdir -p ~/.include
+  echo "# See ~/.bash_formatting" > $FILE_ADDITIONAL_FORMATS_OUTPUT
+  for k in {0..255}; do
+    printf 'ANSI_ESCFMT_BACKGROUND_256C_%d=$(printf "\\e[38;5;%dm")\n' "$k" "$k" \
+    >> $FILE_ADDITIONAL_FORMATS_OUTPUT
+  done
+  source-existing-file $FILE_ADDITIONAL_FORMATS_OUTPUT
+}
+
+ANSI_ESCFMT_GENERATE_ALL_256C_ALL() {
+  mkdir -p ~/.include
+  echo "# See ~/.bash_formatting" > $FILE_ADDITIONAL_FORMATS_OUTPUT
+  for k in {0..255}; do
+    printf 'ANSI_ESCFMT_TEXT_256C_%d=$(printf "\\e[38;5;%dm")\n' "$k" "$k" \
+    >> $FILE_ADDITIONAL_FORMATS_OUTPUT
+  done
+  echo "# ~" >> $FILE_ADDITIONAL_FORMATS_OUTPUT
+  for k in {0..255}; do
+    printf 'ANSI_ESCFMT_BACKGROUND_256C_%d=$(printf "\\e[38;5;%dm")\n' "$k" "$k" \
+    >> $FILE_ADDITIONAL_FORMATS_OUTPUT
+  done
+  source-existing-file $FILE_ADDITIONAL_FORMATS_OUTPUT
+}
+
+# idk why I spent a few hours on this rabbit hole to understand the arcane
+# scribbles that set the colour in my PS1 lol. But I guess here we are lol
