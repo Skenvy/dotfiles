@@ -70,13 +70,9 @@ fi
 # and \] special prompt width commands directly in the prompt not on the colour
 # variables, _and_ ${COLOUR_NAME} gets expanded to the bytes of COLOUR_NAME each
 # time dynamically, so the ANSI escape 0x1B is preserved.
-
-# PS1 Colours: \e ~= \033 , [0m ~= [00m
-RED=$(printf '\e[91m')
-GREEN=$(printf '\033[01;32m')
-BLUE=$(printf '\033[01;34m')
-YELLOW=$(printf '\e[38;5;226m')
-RESET=$(printf '\e[0m') # in skel, '\[\033[00m\]'
+source-existing-file ~/.bash_formatting
+# Add one colour from the 256C that we don't have in the default formatting.
+ANSI_ESCFMT_TEXT_256C_226m=$(printf "\e[38;5;226m") # "Yellow"
 
 # Git branch for prompt
 parse_git_branch() {
@@ -89,7 +85,16 @@ prompt_shlvl() {
 }
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[${GREEN}\]\u\[${RESET}\]@\[${GREEN}\]\h\[${RESET}\]:\[${BLUE}\]\w\[${RED}\]$(parse_git_branch)\[${YELLOW}\]$(prompt_shlvl)\[${RESET}\]\$ '
+# It's nice to keep the rest of the file to shorter lines but our PS1 here is
+# going to be using a lot of long var names from ~/.bash_formatting so we're
+# looser with how long we care about these lines being..?
+PS1='${debian_chroot:+($debian_chroot)}\[${ANSI_ESCFMT_TEXT_GREEN}\
+${ANSI_ESCFMT_SET_BOLD}\]\u\[${ANSI_ESCFMT_RESET_DEFAULT}\]@\[\
+${ANSI_ESCFMT_TEXT_GREEN}${ANSI_ESCFMT_SET_BOLD}\]\h\[\
+${ANSI_ESCFMT_RESET_DEFAULT}\]:\[${ANSI_ESCFMT_TEXT_BLUE}\
+${ANSI_ESCFMT_SET_BOLD}\]\w\[${ANSI_ESCFMT_RESET_DEFAULT}\
+${ANSI_ESCFMT_TEXT_16C_RED}\]$(parse_git_branch)\[${ANSI_ESCFMT_TEXT_256C_226m}\
+\]$(prompt_shlvl)\[${ANSI_ESCFMT_RESET_DEFAULT}\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)$(prompt_shlvl)\$ '
 fi
