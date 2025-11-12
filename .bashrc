@@ -60,10 +60,23 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# PS1 Colours
+##### PS1
+# Some rules apply differently to the PS1 compared to other bash variables......
+# Dollar expansions happen on the raw text of the PS1's string value. We can set
+# PS1='$(call_some_function)' in single quotes, and call_some_function will get
+# called dynamically on every prompt. We colour our prompt by setting colours by
+# printf'ing the '\e' to get literal ANSI escape 0x1B, and then using the colour
+# in the PS1 via something like '\[${COLOUR_NAME}\]' -- as we need to use the \[
+# and \] special prompt width commands directly in the prompt not on the colour
+# variables, _and_ ${COLOUR_NAME} gets expanded to the bytes of COLOUR_NAME each
+# time dynamically, so the ANSI escape 0x1B is preserved.
+
+# PS1 Colours: \e ~= \033 , [0m ~= [00m
 RED=$(printf '\e[91m')
+GREEN=$(printf '\033[01;32m')
+BLUE=$(printf '\033[01;34m')
 YELLOW=$(printf '\e[38;5;226m')
-RESET=$(printf '\e[0m')
+RESET=$(printf '\e[0m') # in skel, '\[\033[00m\]'
 
 # Git branch for prompt
 parse_git_branch() {
@@ -76,7 +89,7 @@ prompt_shlvl() {
 }
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]${RED}$(parse_git_branch)${YELLOW}$(prompt_shlvl)${RESET}\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[${GREEN}\]\u\[${RESET}\]@\[${GREEN}\]\h\[${RESET}\]:\[${BLUE}\]\w\[${RED}\]$(parse_git_branch)\[${YELLOW}\]$(prompt_shlvl)\[${RESET}\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)$(prompt_shlvl)\$ '
 fi
