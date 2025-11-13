@@ -71,12 +71,36 @@ fi
 # variables, _and_ ${COLOUR_NAME} gets expanded to the bytes of COLOUR_NAME each
 # time dynamically, so the ANSI escape 0x1B is preserved.
 source-existing-file ~/.bash_formatting
-# Add one colour from the 256C that we don't have in the default formatting.
+
+# Add two colours from the 256C that we don't have in the default formatting.
+ANSI_ESCFMT_TEXT_256C_129m=$(printf "\e[38;5;129m") # "Purple"
+X_256C_TEXT_PURPLE="$ANSI_ESCFMT_TEXT_256C_129m"
 ANSI_ESCFMT_TEXT_256C_226m=$(printf "\e[38;5;226m") # "Yellow"
+X_256C_TEXT_YELLOW="$ANSI_ESCFMT_TEXT_256C_226m"
 
 # Git branch for prompt
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+ps1_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+# Format the appearance of the git branch
+ps1_style_git() {
+  # If the repo we're in is in $HOME, make it italic. Less visually obvious.
+  if [ "$(git rev-parse --show-toplevel)" == "$HOME" ]; then
+    style_if_home="$SGR_SET_ITALIC"
+  else
+    # Do the same italic if we're in a submodule in $HOME.
+    if [ "$(git rev-parse --show-superproject-working-tree)" == "$HOME" ]; then
+      style_if_home="$SGR_SET_ITALIC"
+    fi
+  fi
+  # If we have a non-empty status, then invert the colours. Visually obvious.
+  if [ "$(git status -s)" != "" ]; then
+      style_if_status="$SGR_SET_INVERTED"
+  else
+      style_if_status=""
+  fi
+  echo "$style_if_home$style_if_status"
 }
 
 # $SHLVL for prompt
@@ -84,19 +108,37 @@ prompt_shlvl() {
     echo "[${SHLVL}]"
 }
 
+# Build any shell options (shopt) we want to display.
+
+# Login shell changes which files are read on bash startup so we care about it!
+is_login_shell() {
+  shopt -q login_shell && return 0 || return 1
+}
+
+# Combine and display all the shopt flags we care to display.
+prompt_shopts() {
+  flags=""
+  flags="$(is_login_shell && echo "L$flags")"
+  if [ "$flags" != "" ]; then
+    echo "{$flags}"
+  else
+    echo "{-}"
+  fi
+}
+
 if [ "$color_prompt" = yes ]; then
 # It's nice to keep the rest of the file to shorter lines but our PS1 here is
 # going to be using a lot of long var names from ~/.bash_formatting so we're
 # looser with how long we care about these lines being..?
-PS1='${debian_chroot:+($debian_chroot)}\[${ANSI_ESCFMT_TEXT_GREEN}\
-${ANSI_ESCFMT_SET_BOLD}\]\u\[${ANSI_ESCFMT_RESET_DEFAULT}\]@\[\
-${ANSI_ESCFMT_TEXT_GREEN}${ANSI_ESCFMT_SET_BOLD}\]\h\[\
-${ANSI_ESCFMT_RESET_DEFAULT}\]:\[${ANSI_ESCFMT_TEXT_BLUE}\
-${ANSI_ESCFMT_SET_BOLD}\]\w\[${ANSI_ESCFMT_RESET_DEFAULT}\
-${ANSI_ESCFMT_TEXT_16C_RED}\]$(parse_git_branch)\[${ANSI_ESCFMT_TEXT_256C_226m}\
-\]$(prompt_shlvl)\[${ANSI_ESCFMT_RESET_DEFAULT}\]\$ '
+PS1='${debian_chroot:+($debian_chroot)}\
+\[${SGR_TEXT_GREEN}${SGR_SET_BOLD}\]\u\[${SGR_RESET_DEFAULT}\]@\
+\[${SGR_TEXT_GREEN}${SGR_SET_BOLD}\]\h\[${SGR_RESET_DEFAULT}\]:\
+\[${SGR_TEXT_BLUE}${SGR_SET_BOLD}\]\w\[${SGR_RESET_DEFAULT}\]:\
+\[${XTERM_TEXT_RED}$(ps1_style_git)\]$(ps1_git_branch)\[${SGR_RESET_DEFAULT}\]:\
+\[${X_256C_TEXT_YELLOW}\]$(prompt_shlvl)\[${SGR_RESET_DEFAULT}\]:\
+\[${X_256C_TEXT_PURPLE}\]$(prompt_shopts)\[${SGR_RESET_DEFAULT}\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)$(prompt_shlvl)\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w:$(ps1_git_branch):$(prompt_shlvl):$(prompt_shopts)\$ '
 fi
 unset color_prompt force_color_prompt
 
