@@ -174,6 +174,9 @@ Now with a `.gitmodules` file that places **this repository** in the `dotfiles` 
 ```
 With the submodule initialised and updated we can now symlink its contents into `$HOME`.
 
+> [!TIP]
+> Once you've followed the rest of these steps the _first_ time, repeating them again is as simple as using the `rehome` alias seen in [`main`'s `~/.bash_aliases`](https://github.com/Skenvy/dotfiles/blob/main/.bash_aliases).
+
 Remember to read the above section on [dotfiles-submodule-symlinks](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#dotfiles-submodule-symlinks) to understand how to manage the case of checking-in a file to the repository that submodules this one where the file matches a file path that already exists in this repository without having to set `CLOBBER_CHECKEDIN_ROOT` to its most destructive option of `REPLACE`.
 > [!CAUTION]
 > `CLOBBER_HOME=DESTRUCTIVELY` will **force** symlinks (`ln -sf`) to write over files.
