@@ -85,22 +85,26 @@ ps1_git_branch() {
 
 # Format the appearance of the git branch
 ps1_style_git() {
-  # If the repo we're in is in $HOME, make it italic. Less visually obvious.
-  if [ "$(git rev-parse --show-toplevel)" == "$HOME" ]; then
-    style_if_home="$SGR_SET_ITALIC"
-  else
-    # Do the same italic if we're in a submodule in $HOME.
-    if [ "$(git rev-parse --show-superproject-working-tree)" == "$HOME" ]; then
+  # Make sure we're in a repo by way of if rev-parse can resolve the git dir
+  git rev-parse --git-dir > /dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    # If the repo we're in is in $HOME, make it italic. Less visually obvious.
+    if [ "$(git rev-parse --show-toplevel)" == "$HOME" ]; then
       style_if_home="$SGR_SET_ITALIC"
+    else
+      # Do the same italic if we're in a submodule in $HOME.
+      if [ "$(git rev-parse --show-superproject-working-tree)" == "$HOME" ]; then
+        style_if_home="$SGR_SET_ITALIC"
+      fi
     fi
+    # If we have a non-empty status, then invert the colours. Visually obvious.
+    if [ "$(git status -s)" != "" ]; then
+        style_if_status="$SGR_SET_INVERTED"
+    else
+        style_if_status=""
+    fi
+    echo "$style_if_home$style_if_status"
   fi
-  # If we have a non-empty status, then invert the colours. Visually obvious.
-  if [ "$(git status -s)" != "" ]; then
-      style_if_status="$SGR_SET_INVERTED"
-  else
-      style_if_status=""
-  fi
-  echo "$style_if_home$style_if_status"
 }
 
 # $SHLVL for prompt
