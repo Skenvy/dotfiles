@@ -259,10 +259,10 @@ XTERM_BACKGROUND_WHITE="$ANSI_ESCFMT_BACKGROUND_16C_WHITE"
 # number is modulod 256. E.g. "200" is treated identical to "456". I don't know
 # why you'd do this though, there's no point to...
 
-alias DISPLAY_256_PALETTE_FOREGROUND='for i in {0..255}; do printf \
-"\e[38;5;${i}m%3d " "$i";((i%16==15))&& printf "\e[0m\n";done;printf "\e[0m\n"'
-alias DISPLAY_256_PALETTE_BACKGROUND='for i in {0..255}; do printf \
-"\e[48;5;${i}m%3d " "$i";((i%16==15))&& printf "\e[0m\n";done;printf "\e[0m\n"'
+alias DISPLAY_256_PALETTE_FOREGROUND='for i in {0..255}; do
+printf "\e[38;5;${i}m%3d " "$i"; ((i%16==15)) && printf "\e[0m\n"; done;'
+alias DISPLAY_256_PALETTE_BACKGROUND='for i in {0..255}; do
+printf "\e[48;5;${i}m%3d " "$i"; ((i%16==15)) && printf "\e[0m\n"; done;'
 
 # For a text or background colour you like from these, you use that colour via
 # either '\e[38;5;<foreground-colour>m' or '\e[48;5;<background-colour>m'
