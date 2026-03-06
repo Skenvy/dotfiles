@@ -1,4 +1,4 @@
-# SSH
+# [SSH](https://github.com/Skenvy/dotfiles/blob/main/.ssh/README.md)
 > [!NOTE]
 > These tips _originally_ started in [this gist](https://gist.github.com/Skenvy/8e16d4f044707e63c670f5b487da02c0#ssh).
 >
@@ -21,13 +21,33 @@ See the docs on:
 
 ## First time setup
 > [!CAUTION]
-> This section is only relevant if you are setting up your dotfiles repo to check-in your `~/.ssh/config`, or looking for the discussion on sharing keys between `WSL` and `Windows`.
+> This "First time setup" section is only relevant if you are setting up your dotfiles repo to check-in your `~/.ssh/config`.
 > If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
+>
+> Because these subsections are only contextually relevant to this repository's "dotfile repository pattern" rather than being generically applicable to setting up SSH, they are collapsed `<details>` blocks, to avoid someone reading them without reading this context aware preface and falsely assuming that understanding them is a necessary step before following the rest of this guide.
+
+<details>
+
+<summary>I've read the caution but want to read this section anyway</summary>
+
 ### Dotfiles
+
+<details>
+
+<summary>How to check-in your ssh config file according to this repo's dotfile pattern</summary>
+
 To check-in our only user config for SSH, `~/.ssh/config`, in such a way that it can be extended when _this_ repo's [dotfile inclusion methodology](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#include) is followed, we make use of SSH's `Include` directive in our checked-in `~/.ssh/config`.
 
 To make it easier to use the same keys between a `Windows` machine and a `WSL` instance on it, we can symlink the keys _from_ Windows to WSL. If you would rather manually copy each of the keys as you make them, that won't interfere with the config being checked in, but it will mean the rest of this "setup" section will be irrelevant.
-### Symlink the _whole_ directory (NOT checked-in config)
+
+</details>
+
+### WSL: Symlink the _whole_ directory
+
+<details>
+
+<summary>The simpler option, which does NOT check-in config</summary>
+
 If you are looking for how to symlink your whole SSH folder from Windows to WSL to use the same keys and config, but are not bothered with checking-in your config, then the easiest option is the following, which DOESN'T support checked-in config.
 
 From within WSL;
@@ -37,7 +57,15 @@ YOUR_WINDOWS_USERNAME=example
 mkdir -p /mnt/c/Users/$YOUR_WINDOWS_USERNAME/.ssh
 ln -s /mnt/c/Users/$YOUR_WINDOWS_USERNAME/.ssh ~/.ssh
 ```
-### Symlink each file/folder in the ssh folder (YES checked-in config)
+
+</details>
+
+### WSL: Symlink each file/folder in the ssh folder
+
+<details>
+
+<summary>The less simple option, which DOES check-in config</summary>
+
 To support periodically re-symlinking all files (except for `~/.ssh/config` and _this file_ (`~/.ssh/README`)) from my Windows `~/.ssh` to my WSL's `~/.ssh`, I make use of the following two aliases, which require a `LOCAL_WINDOWS_USERNAME` to be set [somewhere](https://github.com/Skenvy/dotfiles/tree/main/.include/.pre#bashrc) (e.g. I personally set mine in my `~/.include/.pre/.bashrc`);
 ```bash
 # LOCAL_WINDOWS_USERNAME set in some bashrc before these aliases are used
@@ -46,6 +74,11 @@ alias wsl_resym_ssh="( shopt -s dotglob; WINDOWS_PATH=\"/mnt/c/Users/\$LOCAL_WIN
 ```
 If you're using this repository as a template for your own dotfiles, these aliases exist in my [`home`](https://github.com/Skenvy/dotfiles/blob/home/.bash_aliases) but I don't keep aliases in the `main` branch because they are too flavoured for what is supposed to be a bland/basic `main`.
 Note that the alias `wsl_resym_ssh` only works as expected while we only track files directly in the `.ssh` folder, and would break if we checked-in anything nested in a folder. This works here because all I have accounted for checking in is my `~/.ssh/config` and this `~/.ssh/README.md`.
+
+</details>
+
+</details>
+
 ## Creating a new key
 To connect from "this machine" to a new GH account. While `~` will be different from your Windows and WSL's perspective, WSL's `~/.ssh` _should_ be a **soft link** to your window's `~/.ssh`, so it's ok to use either.
 ```bash
