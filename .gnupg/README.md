@@ -24,19 +24,20 @@ See the docs on:
 ## First time setup
 > [!CAUTION]
 > This section is only relevant if you are setting up your dotfiles repo to check-in your `~/.gnupg/*.conf`.
-> Or to read about GitHub's vigilant mode.
 > If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
+>
+> Because these subsections are only contextually relevant to this repository's "dotfile repository pattern" rather than being generically applicable to setting up GPG, they are collapsed `<details>` blocks, to avoid someone reading them without reading this context aware preface and falsely assuming that understanding them is a necessary step before following the rest of this guide.
 ### Dotfiles
+
+<details>
+
+<summary>How to check-in your gpg conf files according to this repo's dotfile pattern</summary>
+
 To check-in our user config for GPG, `~/.gnupg/*.conf`, without being able to make use of our [dotfile inclusion methodology](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#include) _because GPG does not have any sort of inclusion mechanism_, yet still adhere to both patterns that we support (where this repo is either `$HOME` itself or a submodule that we symlink into `$HOME` with clobber protection), we must use the [`CLOBBER_CHECKEDIN_ROOT_IGNORELIST` option](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#dotfiles-submodule-symlinks) in our [submodule support script](./bin/dotfiles-submodule-symlinks) (see the example  [base dotfiles-submodule-symlinks-hook](https://github.com/Skenvy/dotfiles/blob/base/.include/dotfiles-submodule-symlinks-hook.sh) where you would need to list any gpg config files you would add to a repository that would submodule this one).
 
 The first time you run gpg it may or may not create any of the config files and populate them with some options. Most notably `use-keyboxd` is a default option that will frequently appear in `common.conf` these days.
 
-### Vigilant mode
-> [!IMPORTANT]
-> Don't let someone else impersonate you!
-> See GitHub's [Enabling "vigilant mode"](https://docs.github.com/en/authentication/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits#enabling-vigilant-mode) docs.
-
-Anyone can `git commit` with settings that will label their commits with your identity and `git push` them to any repository, which will show up as if _you_ authored the commit! Setting up gpg is not just to provide a method of guaranteeing authorship from the perspective solely of a repository maintainer / organisation, but also of guaranteeing that only commits you sign are demonstrably authored by you. Setting "vigilant mode" in GitHub will still allow non-signed commits claiming to be authored by you to be pushed, but they will display a status next to them that clearly marks them as "unverified" commits.
+</details>
 
 ### Symlink setup
 
@@ -48,6 +49,13 @@ WSL doesn't currently have anything that matches `/etc/skel/.gnupg/*`, so for WS
 
 </details>
 
+## First time setup: GitHub specific
+### Vigilant mode
+> [!IMPORTANT]
+> Don't let someone else impersonate you!
+> See GitHub's [Enabling "vigilant mode"](https://docs.github.com/en/authentication/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits#enabling-vigilant-mode) docs.
+
+Anyone can `git commit` with settings that will label their commits with your identity and `git push` them to any repository, which will show up as if _you_ authored the commit! Setting up gpg is not just to provide a method of guaranteeing authorship from the perspective solely of a repository maintainer / organisation, but also of guaranteeing that only commits you sign are demonstrably authored by you. Setting "vigilant mode" in GitHub will still allow non-signed commits claiming to be authored by you to be pushed, but they will display a status next to them that clearly marks them as "unverified" commits.
 ## Install
 Install with the following, and use these commands to diagnose where you've installed to!
 
