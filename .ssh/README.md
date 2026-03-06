@@ -79,16 +79,85 @@ Note that the alias `wsl_resym_ssh` only works as expected while we only track f
 
 </details>
 
+## Be aware
+> [!TIP]
+> You only truly need to be "aware" of all these things if you're following this whole guide as a single cohesive strategy.
+>
+> If you already know what you came here for, or just to read a specific example, then you probably don't "need to be aware."
+
+> [!CAUTION]
+> If you're following on a Mac, follow the `bash` examples, and the other examples will be irrelevant.
+>
+> If you're on a WSL and only want to work in WSL and skip Windows, also just focus on the `bash` examples.
+>
+> If you're on Windows, and you _don't want to use WSL_ then you'll need to follow the `cmd` and/or `pwsh` alternatives.
+>
+> If you're setting up WSL _AND_ Windows _together_, you will have additional setup requirements in the below 'Be "Home Aware"' warning.
+
+> [!TIP]
+> The below are micro explanations to justify this TLDR.
+### Be "OS Aware"
+> [!WARNING]
+> Although this guide is "about" SSH, it is, broadly, _geared_ towards _enabling_ WSL.
+>
+> This doesn't really sacrifice any clarity, because all the example commands given for WSL should all work in Mac's [_ancient_ version of bash](https://github.com/Skenvy/dotfiles/tree/main/.MacOS#bash) as well.
+>
+> So Mac and WSL "only" should be equivalent.
+### Be "Shell Aware"
+> [!WARNING]
+> WSL lives inside Windows, _not_ Mac, and quite a lot of commands later are specifically intended for running in _either_ of the two, unique, Windows shells; `cmd` or `pwsh`, but not both.
+>
+> Ideally a code example should either state or be _overwhelming_ implied, as to whether an example is intended for `bash` in either case of WSL or MacOS, or specifically which of the differently behaving `cmd` or `pwsh` in Windows cases.
+>
+> So Windows users will need to be cognizant of _which_ of the two different "Windows shells", `cmd` or `pwsh`, they are using, for each individual example.
+### Be "Home Aware"
+> [!WARNING]
+> If you're setting up WSL _AND_ Windows _together_, and you want to have them _share_ keys, you'll need to be aware of which HOME you're using in any given context.
+>
+> "HOME" will be different from your Windows and WSL's perspective: the `~/.ssh` you navigate to from inside WSL will be different from the `~/.ssh` you navigate to outside of WSL.
+>
+> If you want both WSL and Windows to share the _SAME_ `~/.ssh`, this is possible!
+>
+> WSL can utilise symlinks to setup its own internal view of what _its_ `~/.ssh` is, by setting it as a symlink to the fully realised path of what would be `~/.ssh` from Window's perspective. Windows "junctions" can't reach inside of WSL's filesystem, so in any case, Windows `~/.ssh` will have to be the source of truth, and WSL will have to be told to use it too.
+>
+> If you truly do want to do this, two different strategies are suggested in the above ["Dotfiles Setup"](#dotfiles-setup) section.
+>
+> If you aren't sure yet, or don't want to do this quite yet, if you follow setting up the Windows only side of things, the symlinking strategies in the above ["Dotfiles Setup"](#dotfiles-setup) section can be done at any point in time afterwards, they don't need to be done concurrently.
+>
+> Once both Windows and WSL's `~/.ssh` are symlinked, assuming you chose this, you can access the same keys from both, and you can follow the `bash` steps where both `bash` and `cmd`|`pwsh` are available for something.
+
 ## Creating a new key
-To connect from "this machine" to a new GH account. While `~` will be different from your Windows and WSL's perspective, WSL's `~/.ssh` _should_ be a **soft link** to your window's `~/.ssh`, so it's ok to use either.
+In `bash`
 ```bash
 # Make the key
 EMAIL=your_email@example.com
 KEYNAME=GH_Username
 ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/$KEYNAME
 ```
+In `pwsh`
+```pwsh
+# Make the key
+$EMAIL = "your_email@example.com"
+$KEYNAME = "GH_Username"
+ssh-keygen -t ed25519 -C "$EMAIL" -f "$HOME/.ssh/$KEYNAME"
+```
+In `cmd`
+```cmd
+set EMAIL=your_email@example.com
+set KEYNAME=GH_Username
+ssh-keygen -t ed25519 -C "%EMAIL%" -f "%userprofile%\.ssh\%KEYNAME%"
+```
 ## Upload the public key
-Upload the public key `cat ~/.ssh/$KEYNAME.pub` to https://github.com/settings/ssh/new as an "Authentication Key" with some name.
+Upload the public key to https://github.com/settings/ssh/new as an "Authentication Key" with some name.
+### Get the contents
+In `bash` or `pwsh` (assuming you still have `KEYNAME` set from creating above)
+```bash
+cat ~/.ssh/$KEYNAME.pub
+```
+In `cmd` (assuming you still have `KEYNAME` set from creating above)
+```cmd
+type "%userprofile%\.ssh\%KEYNAME%.pub"
+```
 ## Add the new key to the ssh-agent
 ### Enable `chmod`'ing' the keys stored in Windows filesystem from WSL
 If you're going to `chmod` you might need to add the following to `sudo vi /etc/wsl.conf` from WSL
