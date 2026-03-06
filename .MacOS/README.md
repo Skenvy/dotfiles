@@ -1,8 +1,24 @@
 # [MacOS _specific_ dotfiles](https://github.com/Skenvy/dotfiles/tree/main/.MacOS)
-> [!WARNING]
+> [!CAUTION]
 > Some of the examples here might only be relevant to this's [`home`](https://github.com/Skenvy/dotfiles/tree/home) and not part of this's [`main`](https://github.com/Skenvy/dotfiles/tree/main)
 
 These are general instructions relevant to `MacOS` setup. You probably want to track your own brews. My stuff for these live in my [`home`](https://github.com/Skenvy/dotfiles/tree/home) but I've left the instructions in [`main`](https://github.com/Skenvy/dotfiles/tree/main).
+## [Bash](https://github.com/apple-oss-distributions/bash)
+[Zsh](https://www.zsh.org/) has been the "default shell" since [Catalina](https://support.apple.com/en-au/102360).
+
+I prefer bash, or, at least, I prefer not needing to maintain both bash and zsh files, and zsh is not the default on Ubuntu. And this was initialised as close to Ubuntu's skel as possible.
+
+However...
+
+> [!IMPORTANT]
+> MacOS uses an _ancient_ [version](https://github.com/apple-oss-distributions/bash/blob/main/version.h) of bash.
+> `3.2.57`.
+
+You can map from a given `macOS` release on the [Releases](https://opensource.apple.com/releases/) page by expanding the drop downs and searching for `bash-`, which will link to a specific tag on Apple's [bash](https://github.com/apple-oss-distributions/bash) source mirror/fork.
+
+At the time of writing, it's close to 20 years old for the major version.
+[Bash](https://www.gnu.org/software/bash/) [[source](https://cgit.git.savannah.gnu.org/cgit/bash.git/)] [[manual](https://www.bashcookbook.com/bashinfo/source/bash-3.2/doc/bashref.pdf)] `3.2.0` was released 28th September 2006. `3.2.57`, the patch that MacOS is frozen on since, can be seen on the [index](https://ftp.gnu.org/gnu/bash/) as released on the 7th of November 2014.
+
 ## [Homebrew](https://brew.sh/)
 * See your brews at [~/.MacOS/Brewfile](https://github.com/Skenvy/dotfiles/blob/main/.MacOS/Brewfile).
 * Restore brews
