@@ -21,12 +21,17 @@ See the docs on:
 * [Sonatype: GPG](https://central.sonatype.org/publish/requirements/gpg/) (includes steps on "expired keys")
 * [Example: bfrg/gpg-guide](https://github.com/bfrg/gpg-guide)
 
-## First time setup
+## Dotfiles setup
 > [!CAUTION]
-> This section is only relevant if you are setting up your dotfiles repo to check-in your `~/.gnupg/*.conf`.
+> This "Dotfiles setup" section is only relevant if you are setting up your dotfiles repo to check-in your `~/.gnupg/*.conf`.
 > If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
 >
 > Because these subsections are only contextually relevant to this repository's "dotfile repository pattern" rather than being generically applicable to setting up GPG, they are collapsed `<details>` blocks, to avoid someone reading them without reading this context aware preface and falsely assuming that understanding them is a necessary step before following the rest of this guide.
+
+<details>
+
+<summary><i>I acknowledged the caution but want to read this section anyway</i></summary>
+
 ### Dotfiles
 
 <details>
@@ -49,7 +54,9 @@ WSL doesn't currently have anything that matches `/etc/skel/.gnupg/*`, so for WS
 
 </details>
 
-## First time setup: GitHub specific
+</details>
+
+## GitHub specific setup
 ### Vigilant mode
 > [!IMPORTANT]
 > Don't let someone else impersonate you!
