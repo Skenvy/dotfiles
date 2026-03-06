@@ -19,16 +19,16 @@ See the docs on:
 * [SSH's "include" directive](https://man.openbsd.org/ssh_config#Include)
 * [Using ssh with vs code devcontainers](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials)
 
-## First time setup
+## Dotfiles setup
 > [!CAUTION]
-> This "First time setup" section is only relevant if you are setting up your dotfiles repo to check-in your `~/.ssh/config`.
+> This "Dotfiles setup" section is only relevant if you are setting up your dotfiles repo to check-in your `~/.ssh/config`.
 > If you are not, then the rest of this guide is still situationally useful, but this section will be irrelevant.
 >
 > Because these subsections are only contextually relevant to this repository's "dotfile repository pattern" rather than being generically applicable to setting up SSH, they are collapsed `<details>` blocks, to avoid someone reading them without reading this context aware preface and falsely assuming that understanding them is a necessary step before following the rest of this guide.
 
 <details>
 
-<summary>I've read the caution but want to read this section anyway</summary>
+<summary><i>I acknowledged the caution but want to read this section anyway</i></summary>
 
 ### Dotfiles
 
