@@ -44,14 +44,15 @@
 <!-- misc specific to this repo (or any one of my repos) -->
 [my dotfiles]: https://github.com/Skenvy/dotfiles/tree/main/.devcontainer
 [my `install.sh`]: https://github.com/Skenvy/dotfiles/blob/main/install.sh
-[configure a dev container e.g.]: https://github.com/Skenvy/scratchpad/new/main?dev_container_template=1&filename=.devcontainer%2Fdevcontainer.json
-[Skenvy/scratchpad codespaces]: https://github.com/Skenvy/scratchpad/codespaces
+[configure a dev container e.g.]: https://github.com/Skenvy/dotfiles/new/main?dev_container_template=1&filename=.devcontainer%2Fdevcontainer.json
+[Skenvy/dotfiles codespaces]: https://github.com/Skenvy/dotfiles/codespaces
 [configure and create / new with options...]: https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=900548071
-[repo codespaces settings]: https://github.com/Skenvy/scratchpad/settings/codespaces
+[repo codespaces settings]: https://github.com/Skenvy/dotfiles/settings/codespaces
 
-# [Devcontainers](https://github.com/Skenvy/scratchpad/blob/main/.devcontainer/README.md)
+# [Devcontainers](https://github.com/Skenvy/dotfiles/blob/main/.devcontainer/devlog.md)
 > [!WARNING]
 > This started out over in my [scratchpad](https://github.com/Skenvy/scratchpad/blob/main/.devcontainer/README.md), so links that were previously links to this dotfiles repository to point to examples here, are still URL's and not relative path links like elsewhere here.
+> I've also swapped the several links that were previously to example codespace settings in the scratchpad to be for "here" too.
 
 > [!CAUTION]
 > These are just some notes on testing the experience of setting up [devcontainers][devcontainers], a convenient wrapper that makes developing in configurable containers _easier_ by providing a tool that does many things OotB that have always been possible but cumbersome.
@@ -112,7 +113,7 @@ If you don't have any config yet, or you maybe do but still pick this option fro
 ---
 If you select to "`configure a dev container`" from the "`<> Code`" -> "`Codespaces`" -> "`...`" drop down menu you'll be taken to a link that looks like:
 * i.e. `https://github.com/<owner>/<repo>/new/<trunk>?dev_container_template=1&filename=.devcontainer%2Fdevcontainer.json`
-* e.g. [`https://github.com/Skenvy/scratchpad/new/main?dev_container_template=1&filename=.devcontainer%2Fdevcontainer.json`][configure a dev container e.g.]
+* e.g. [`https://github.com/Skenvy/dotfiles/new/main?dev_container_template=1&filename=.devcontainer%2Fdevcontainer.json`][configure a dev container e.g.]
 
 Which will want to add a file `<repo-root>/.devcontainer/devcontainer.json` which is simply
 ```json
@@ -139,7 +140,7 @@ If it's possible/reasonable for you to run a container from a base image that is
 ### Codespaces misc
 * You can see your repository codespaces by simply adding `/codespaces` to the end of your repo url:
     * i.e. `https://github.com/<owner>/<repo>/codespaces`
-    * e.g. [`https://github.com/Skenvy/scratchpad/codespaces`][Skenvy/scratchpad codespaces]
+    * e.g. [`https://github.com/Skenvy/dotfiles/codespaces`][Skenvy/dotfiles codespaces]
 * There's also an account view of codespaces at [`https://github.com/codespaces`][account codespaces]
 * the options if you try to [configure and create / new with options...][configure and create / new with options...] are limited to branch, region, and machine type, and don't expose any of the devcontainer options at that stage.
 * The current [repo codespaces settings][repo codespaces settings] are limited to configuring prebuilds.
