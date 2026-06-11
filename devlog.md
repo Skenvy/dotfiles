@@ -1,6 +1,9 @@
 # [Devlog](https://github.com/Skenvy/dotfiles/blob/main/devlog.md)
 > [!CAUTION]
 > See ["How to approach reading my devlogs"](https://github.com/Skenvy/Skenvy/blob/main/extra/docs/devlog.md) if you need to.
+
+> [!TIP]
+> Skip to the end of this to read the loosely planned [goals](#goals) that might be tackled weeks, months, years, or never, from now.
 ## Using this repo?
 The main README outlines how to _use_ this repo in either of the two supported patterns.
 1. [Use as "`$HOME` is _this_ repo"](https://github.com/Skenvy/dotfiles/tree/main?tab=readme-ov-file#use-as-home-is-this-repo)
@@ -161,3 +164,14 @@ if (Test-Path $PROFILE.CurrentUserAllHosts) {
 ### "ExecutionPolicy"
 [How does the RemoteSigned execution policy work?](https://devblogs.microsoft.com/powershell/how-does-the-remotesigned-execution-policy-work/) is an MS blog explaining `ExecutionPolicy`.
 [about_Execution_Policies :: 5.1](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1) is more authoritative.
+## Goals
+Loosely planned goals that I might get around to implementing or not..
+1. figure out how to test in CI the [bin/dotfiles-submodule-symlinks](bin/dotfiles-submodule-symlinks) script
+1. figure out how to test the devcontainers [install.sh](install.sh) script
+1. figure out how to test the [base devcontainers install script](https://github.com/Skenvy/dotfiles/blob/base/install.sh)
+1. figure out how to add a **powershell** version of the [bin/dotfiles-submodule-symlinks](bin/dotfiles-submodule-symlinks) script
+    * test this new script in windows CI runner?
+1. AI is a whole new world. I'm not jumping the gun, but, it would be good to know, if any of these new AI tools require / expect dotfiles?
+1. Rewrite the [README](README.md) and or maybe _this_ devlog to be more concise..
+
+These goals are not actively planned, but are just easier to keep track of here than anywhere else.
