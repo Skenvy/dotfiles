@@ -14,3 +14,5 @@ up, and run the `"dotfiles.installCommand"` script, which here is our
 So this here's [devcontainer.json](./devcontainer.json) is just to demonstrate
 that this's [`"install.sh"`](../install.sh) script works properly when setting
 up the default suggested image `"mcr.microsoft.com/devcontainers/universal:2"`.
+
+For much more explorative notes, see the adjacent [devlog](./devlog.md).

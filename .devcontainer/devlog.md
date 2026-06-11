@@ -51,7 +51,8 @@
 
 # [Devcontainers](https://github.com/Skenvy/dotfiles/blob/main/.devcontainer/devlog.md)
 > [!WARNING]
-> This started out over in my [scratchpad](https://github.com/Skenvy/scratchpad/blob/main/.devcontainer/README.md), so links that were previously links to this dotfiles repository to point to examples here, are still URL's and not relative path links like elsewhere here.
+> This started out over in my [scratchpad](https://github.com/Skenvy/scratchpad/blob/596bb2c0cf641d265a330498d26bc07b0baf72d1/.devcontainer/README.md).
+> Links that were previously links to this dotfiles repository to point to examples here, are still URL's and not relative path links like elsewhere here.
 > I've also swapped the several links that were previously to example codespace settings in the scratchpad to be for "here" too.
 
 > [!CAUTION]
