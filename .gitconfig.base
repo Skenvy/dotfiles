@@ -13,8 +13,8 @@
     # editor = <add in .include/.pre/.gitconfig>
     # filemode = <add in .include/.pre/.gitconfig>
     # symlinks = <add in .include/.pre/.gitconfig>
-    excludesFile = ./.config/git/.gitignore
-    attributesFile = ./.config/git/.gitattributes
+    excludesFile = ~/.config/git/.gitignore
+    attributesFile = ~/.config/git/.gitattributes
 
 [gpg]
     # program = <add in .include/.pre/.gitconfig>

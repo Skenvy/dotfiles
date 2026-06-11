@@ -1,0 +1,5 @@
+{
+  "name": "Universal",
+  // https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/universal/about
+  "image": "mcr.microsoft.com/devcontainers/universal:5.1.4-noble"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Base Alpine",
+  // https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/base/about
+  "image": "mcr.microsoft.com/devcontainers/base:alpine-3.21"
+}

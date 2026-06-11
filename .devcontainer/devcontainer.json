@@ -1,4 +1,5 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "name": "Default",
+  "image": "mcr.microsoft.com/devcontainers/universal:6",
   "features": {}
 }
