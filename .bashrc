@@ -203,8 +203,19 @@ if ! shopt -oq posix; then
 fi
 
 ##### GIT+SSH+GPG
-# subshell to wrap sets on start
-( VERBOSE=false source-existing-file ~/git/config/apply.sh >/dev/null )
+
+# Uncomment this if you want to unambiguously re-run the gitconfig apply script
+# on every bashrc run. NOTE that this will yield a race condition in WSL if you
+# set `systemd=true` in /etc/wsl.conf -- because WSL's systemd launches its own
+# login shell when starting, which will race the login shell connected to your
+# terminal via SessionLeader Relay.
+
+# ( VERBOSE=false source-existing-file ~/git/config/apply.sh >/dev/null )
+
+# Alternatively uncomment this to give yourself a noisey reminder to run this
+# apply script manually...
+
+# echo "Consider ensuring your ~/.gitconfig, by running: ~/git/config/apply.sh"
 
 if [ -z "$SSH_AUTH_SOCK" ] ; then
     eval `ssh-agent -s` > /dev/null
